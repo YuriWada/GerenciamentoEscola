@@ -1,5 +1,5 @@
-from cadastro import *
-from menu import *
+from system.cadastro import *
+from system.menu import *
 
 class SchoolSystem:
     def __init__(self) -> None:
