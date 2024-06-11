@@ -7,11 +7,10 @@ class SchoolSystem:
 
     def run(self) -> None:
         menuinicial = MenuInicial()
-        menuinicial.render()
-
-        option = None
-        while option != 0:
-            option = int(input("Insira sua opção: "))
-            menuinicial.next(option)
-            if menuinicial:
-                menuinicial.render()
+        while menuinicial is not None:
+            menuinicial.render()
+            try:
+                option = int(input("> Opção (0 para cancelar): "))
+                menuinicial = menuinicial.next(option)
+            except ValueError:
+                print("Opção inválida! Por favor, insira um número.")
