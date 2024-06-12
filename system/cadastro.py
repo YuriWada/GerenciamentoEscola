@@ -41,22 +41,22 @@ class Cadastro(ABC):
         self._validar_login()
     
     # Getters
-    def get_nome(self) -> None:
+    def get_nome(self) -> str:
         return self.nome
     
-    def get_idade(self) -> None:
+    def get_idade(self) -> int:
         return self.idade
     
-    def get_endereco(self) -> None:
+    def get_endereco(self) -> str:
         return self.endereco
     
-    def get_telefone(self) -> None:
+    def get_telefone(self) -> str:
         return self.telefone
     
-    def get_email(self) -> None:
+    def get_email(self) -> str:
         return self.email
     
-    def _get_login(self) -> None:
+    def _get_login(self) -> str:
         return self._login
     
     @abstractmethod

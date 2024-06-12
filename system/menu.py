@@ -28,6 +28,7 @@ class MenuInicial(Menu):
     def next(self, option : int) -> None:
         if option == 1:
             print("Opção 1 - Ok")
+            return self
         elif option == 2:
             print("Opção 2 - Ok")
             return None
