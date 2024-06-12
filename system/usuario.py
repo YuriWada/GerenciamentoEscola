@@ -15,8 +15,8 @@ class Usuario:
         self.email = email
         self._login = login
 
-    def excluir_conta(self) -> None:
-        pass
+    '''def excluir_conta(self) -> None:'''
+
 
 
 
@@ -26,11 +26,10 @@ class Aluno(Usuario):
         self.curso = curso
         self.matricula = matricula
 
-    def ver_notas() -> None:
-        pass
+    '''def ver_notas() -> None:'''
 
-    def ver_horario() -> None:
-        pass
+    '''def ver_horario() -> None:'''
+
 
 
 class Professor(Usuario):
@@ -39,11 +38,9 @@ class Professor(Usuario):
         self.materia = materia
         self.salario = salario
 
-    def adicionar_nota() -> None:
-        pass
+    '''def adicionar_nota() -> None:'''
 
-    def alterar_nota() -> None:
-        pass
+    '''def alterar_nota() -> None:'''
 
 
 class Staff(Usuario):
