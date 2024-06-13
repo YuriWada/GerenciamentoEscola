@@ -1,9 +1,3 @@
-'''
-Class: Usuario
-Author: Julia Raposo
-
-'''
-
 from database import DataBase
 db = DataBase()
 
@@ -16,10 +10,6 @@ class Usuario:
         self.email = email
         self.nivel = nivel
         self._login = login
-
-    '''def excluir_conta(self) -> None:'''
-
-
 
 
 class Aluno(Usuario):
@@ -42,14 +32,12 @@ class Staff(Usuario):
 
 
 class Professor(Staff):
-    def __init__(self, nome: str, idade: int, endereco: str, telefone: str, email: str, login: str, funcao: str, salario: str, materia: str, nivel : int) -> None:
-        super().__init__(nome, idade, endereco, telefone, email, login, funcao, salario, nivel)
-        self.materia = materia
+    def __init__(self, nome: str, idade: int, endereco: str, telefone: str, email: str, login: str, salario: str, disciplina: str, nivel : int) -> None:
+        super().__init__(nome, idade, endereco, telefone, email, login, salario, nivel)
+        self.disciplina = disciplina
     
     '''def adicionar_notas(self, db) -> None:'''
         
-        
-
     '''def alterar_notas()'''
 
 class CorpoEstudantil(Staff):
@@ -57,6 +45,8 @@ class CorpoEstudantil(Staff):
         super().__init__(nome, idade, endereco, telefone, email, login, salario)
         self.cargo = cargo
     
+    def deletar_usuario(colecao, criterio) -> None:
+        db.delete_data(colecao, criterio)
 
 
 
