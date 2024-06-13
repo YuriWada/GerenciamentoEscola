@@ -12,7 +12,7 @@ class Cadastro(ABC):
         self._login = login
         self.validar_dados()
 
-        # setup
+        # Database setup
         self.db = DataBase()
 
     # Validação dos dados
@@ -53,53 +53,65 @@ class CadastroAluno(Cadastro):
         self.__senha = senha
 
     def save(self) -> None:
-        data = {
-            "nome": self.nome,
-            "idade": self.idade,
-            "endereco": self.endereco,
-            "telefone": self.telefone,
-            "email": self.email,
-            "login": self._login,
-            "senha": self.__senha,
-            "curso": self.curso,
-            "matricula": self.matricula
-        }
-        self.db.insert_data("Alunos", data)
+        try:
+            data = {
+                "nome": self.nome,
+                "idade": self.idade,
+                "endereco": self.endereco,
+                "telefone": self.telefone,
+                "email": self.email,
+                "login": self._login,
+                "senha": self.__senha,
+                "curso": self.curso,
+                "matricula": self.matricula
+            }
+            self.db.insert_data("Alunos", data)
+            print("Dados cadastrados com sucesso!")
+        except Exception as e:
+            print(f"Erro ao salvar: {e}")
     
 class CadastroProfessor(Cadastro):
-    def __init__(self, nome: str, idade: int, endereco: str, telefone: str, email: str, login: str, senha: str, disciplina: str, db: DataBase) -> None:
-        super().__init__(nome, idade, endereco, telefone, email, login, db)
+    def __init__(self, nome: str, idade: int, endereco: str, telefone: str, email: str, login: str, senha: str, disciplina: str) -> None:
+        super().__init__(nome, idade, endereco, telefone, email, login)
         self.disciplina = disciplina
         self.__senha = senha
 
     def save(self) -> None:
-        data = {
-            "nome": self.nome,
-            "idade": self.idade,
-            "endereco": self.endereco,
-            "telefone": self.telefone,
-            "email": self.email,
-            "login": self._login,
-            "senha": self.__senha,
-            "disciplina": self.disciplina
-        }
-        self.db.insert_data("Professores", data)
+        try:
+            data = {
+                "nome": self.nome,
+                "idade": self.idade,
+                "endereco": self.endereco,
+                "telefone": self.telefone,
+                "email": self.email,
+                "login": self._login,
+                "senha": self.__senha,
+                "disciplina": self.disciplina
+            }
+            self.db.insert_data("Professores", data)
+            print("Dados cadastrados com sucesso!")
+        except Exception as e:
+            print(f"Erro ao salvar: {e}")
 
 class CadastroStaff(Cadastro):
-    def __init__(self, nome: str, idade: int, endereco: str, telefone: str, email: str, login: str, senha: str, cargo: str, db: DataBase) -> None:
-        super().__init__(nome, idade, endereco, telefone, email, login, db)
+    def __init__(self, nome: str, idade: int, endereco: str, telefone: str, email: str, login: str, senha: str, cargo: str) -> None:
+        super().__init__(nome, idade, endereco, telefone, email, login)
         self.cargo = cargo
         self.__senha = senha
 
     def save(self) -> None:
-        data = {
-            "nome": self.nome,
-            "idade": self.idade,
-            "endereco": self.endereco,
-            "telefone": self.telefone,
-            "email": self.email,
-            "login": self._login,
-            "senha": self.__senha,
-            "cargo": self.cargo
-        }
-        self.db.insert_data("Staff", data)
+        try:
+            data = {
+                "nome": self.nome,
+                "idade": self.idade,
+                "endereco": self.endereco,
+                "telefone": self.telefone,
+                "email": self.email,
+                "login": self._login,
+                "senha": self.__senha,
+                "cargo": self.cargo
+            }
+            self.db.insert_data("Staff", data)
+            print("Dados cadastrados com sucesso!")
+        except Exception as e:
+            print(f"Erro ao salvar: {e}")

@@ -24,7 +24,7 @@ class DataBase:
         load_dotenv(find_dotenv())
 
     # Método para inserir dados no banco de dados
-    def insert_data(self, data: dict) -> None:
+    def insert_data(self, collection_name : str, data: dict) -> None:
         try:
             collection = self.__school_system_db.SchoolSystem
             inserted_id = collection.insert_one(data).inserted_id
