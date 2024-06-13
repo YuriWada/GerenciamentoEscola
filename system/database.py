@@ -36,7 +36,7 @@ class DataBase:
             print(f"Erro inesperado ao inserir dados: {e}")
 
     # Método para fazer consultas no banco de dados
-    def query_data(self, collection_name : str, query: dict) -> None:
+    def query_data(self, collection_name : str, query: dict) -> dict:
         try:
             collection = self.__school_system_db[collection_name]
             documents = list(collection.find(query))
