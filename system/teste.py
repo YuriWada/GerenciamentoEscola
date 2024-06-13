@@ -1,5 +1,6 @@
 from cadastro import *
 from database import DataBase
+from turmas import Turmas
 
 class TesteCadastro:
     def testar_cadastro(self, tipo : str, nome : str, idade : int, endereco : str, telefone : str, email : str, login : str,
