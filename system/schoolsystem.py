@@ -1,5 +1,5 @@
-from system.cadastro import *
-from system.menu import *
+from cadastro import *
+from menu import *
 
 class SchoolSystem:
     def run(self) -> None:

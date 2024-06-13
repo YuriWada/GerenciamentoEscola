@@ -1,8 +1,3 @@
-"""
-    Class Cadastro
-    author @YuriWada
-"""
-
 import hashlib
 from abc import ABC, abstractmethod
 

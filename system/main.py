@@ -1,4 +1,4 @@
-from system.schoolsystem import *
+from schoolsystem import *
 
 class Management:
     def __init__(self):
