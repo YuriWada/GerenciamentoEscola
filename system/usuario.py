@@ -4,7 +4,7 @@ Author: Julia Raposo
 
 '''
 
-
+from database import DataBase
 
 class Usuario:
     def __init__(self, nome : str, idade : int, endereco : str, telefone: str, email : str, login : str, nivel : int) -> None:
@@ -13,11 +13,11 @@ class Usuario:
         self.endereco = endereco
         self.telefone = telefone
         self.email = email
-        self._login = login
         self.nivel = nivel
+        self._login = login
+        self.db = DataBase()
 
     '''def excluir_conta(self) -> None:'''
-
 
 
 
@@ -36,7 +36,6 @@ class Aluno(Usuario):
 class Staff(Usuario):
     def __init__(self, nome: str, idade: int, endereco: str, telefone: str, email: str, login: str, funcao : str, salario: str, nivel : int) -> None:
         super().__init__(nome, idade, endereco, telefone, email, login, nivel)
-        self.funcao = funcao
         self.salario = salario
 
 
@@ -50,9 +49,9 @@ class Professor(Staff):
     '''def alterar_notas()'''
 
 class CorpoEstudantil(Staff):
-    def __init__(self, nome: str, idade: int, endereco: str, telefone: str, email: str, login: str, funcao: str, salario: str) -> None:
-        super().__init__(nome, idade, endereco, telefone, email, login, funcao, salario)
-
+    def __init__(self, nome: str, idade: int, endereco: str, telefone: str, email: str, login: str, cargo: str, salario: str) -> None:
+        super().__init__(nome, idade, endereco, telefone, email, login, salario)
+        self.cargo = cargo
     
 
 
