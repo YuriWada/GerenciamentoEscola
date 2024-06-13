@@ -1,5 +1,6 @@
 import hashlib
 from abc import ABC, abstractmethod
+from database import DataBase
 
 class Cadastro(ABC):
     def __init__(self, nome : str, idade : int, endereco : str, telefone : str, email : str, login : str) -> None:
@@ -10,6 +11,9 @@ class Cadastro(ABC):
         self.email = email
         self._login = login
         self.validar_dados()
+
+        # setup
+        self.db = DataBase()
 
     # Validação dos dados
     def validar_idade(self) -> None:
@@ -34,34 +38,11 @@ class Cadastro(ABC):
         self.validar_email()
         self.validar_telefone()
         self._validar_login()
-    
-    # Getters
-    def get_nome(self) -> str:
-        return self.nome
-    
-    def get_idade(self) -> int:
-        return self.idade
-    
-    def get_endereco(self) -> str:
-        return self.endereco
-    
-    def get_telefone(self) -> str:
-        return self.telefone
-    
-    def get_email(self) -> str:
-        return self.email
-    
-    def _get_login(self) -> str:
-        return self._login
-    
+
+    # Salva os dados no BD
     @abstractmethod
-    def _verificar_senha(self, senha : str) -> bool:
+    def save(self) -> None:
         pass
-    
-    @abstractmethod
-    def exibir_informacoes(self) -> None:
-        pass
-    
 
 # Cadastro do Aluno
 class CadastroAluno(Cadastro):
@@ -71,10 +52,54 @@ class CadastroAluno(Cadastro):
         self.matricula = matricula
         self.__senha = senha
 
-    ## Implementar no banco de dados
-    # Hash para senha
-    def _hash_senha(self, senha : str) -> str:
-       return hashlib.sha256(senha.encode()).hexdigest()
+    def save(self) -> None:
+        data = {
+            "nome": self.nome,
+            "idade": self.idade,
+            "endereco": self.endereco,
+            "telefone": self.telefone,
+            "email": self.email,
+            "login": self._login,
+            "senha": self.__senha,
+            "curso": self.curso,
+            "matricula": self.matricula
+        }
+        self.db.insert_data("Alunos", data)
     
-    def _verificar_senha(self, senha : str) -> bool:
-        return self.__senha == hashlib.sha256(senha.encode()).hexdigest()
+class CadastroProfessor(Cadastro):
+    def __init__(self, nome: str, idade: int, endereco: str, telefone: str, email: str, login: str, senha: str, disciplina: str, db: DataBase) -> None:
+        super().__init__(nome, idade, endereco, telefone, email, login, db)
+        self.disciplina = disciplina
+        self.__senha = senha
+
+    def save(self) -> None:
+        data = {
+            "nome": self.nome,
+            "idade": self.idade,
+            "endereco": self.endereco,
+            "telefone": self.telefone,
+            "email": self.email,
+            "login": self._login,
+            "senha": self.__senha,
+            "disciplina": self.disciplina
+        }
+        self.db.insert_data("Professores", data)
+
+class CadastroStaff(Cadastro):
+    def __init__(self, nome: str, idade: int, endereco: str, telefone: str, email: str, login: str, senha: str, cargo: str, db: DataBase) -> None:
+        super().__init__(nome, idade, endereco, telefone, email, login, db)
+        self.cargo = cargo
+        self.__senha = senha
+
+    def save(self) -> None:
+        data = {
+            "nome": self.nome,
+            "idade": self.idade,
+            "endereco": self.endereco,
+            "telefone": self.telefone,
+            "email": self.email,
+            "login": self._login,
+            "senha": self.__senha,
+            "cargo": self.cargo
+        }
+        self.db.insert_data("Staff", data)

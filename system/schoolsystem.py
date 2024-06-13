@@ -3,6 +3,7 @@ from menu import *
 
 class SchoolSystem:
     def run(self) -> None:
+        # Roda o menu inicial (interface de usuário)
         menuinicial = MenuInicial()
         menuinicial.render()
         while menuinicial is not None:
