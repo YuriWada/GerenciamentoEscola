@@ -26,7 +26,7 @@ class DataBase:
     # Método para inserir dados no banco de dados
     def insert_data(self, collection_name : str, data: dict) -> None:
         try:
-            collection = self.__school_system_db.SchoolSystem
+            collection = self.__school_system_db[collection_name]
             inserted_id = collection.insert_one(data).inserted_id
             print(f"Documento inserido com id: {inserted_id}")
         except errors.PyMongoError as e:
