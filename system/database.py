@@ -1,6 +1,5 @@
 from dotenv import load_dotenv, find_dotenv
 import os
-import pprint
 from pymongo import MongoClient, errors
 
 class DataBase:
@@ -25,7 +24,7 @@ class DataBase:
         load_dotenv(find_dotenv())
 
     # Método para inserir dados no banco de dados
-    def insert_data(self, collection_name : str, data: dict) -> None:
+    def insert_data(self, collection_name : str, data : dict) -> None:
         try:
             collection = self.__school_system_db[collection_name]
             inserted_id = collection.insert_one(data).inserted_id
@@ -36,10 +35,13 @@ class DataBase:
             print(f"Erro inesperado ao inserir dados: {e}")
 
     # Método para fazer consultas no banco de dados
-    def query_data(self, collection_name : str, query: dict) -> dict:
+    def query_data(self, collection_name : str, query : dict = None) -> dict:
         try:
             collection = self.__school_system_db[collection_name]
-            documents = list(collection.find(query))
+            if query:
+                documents = list(collection.find(query))
+            else:
+                documents = list(collection.find())
             return documents
         except errors.PyMongoError as e:
             print(f"Erro ao consultar dados no MongoDB: {e}")
@@ -47,7 +49,7 @@ class DataBase:
             print(f"Erro inesperado ao consultar dados: {e}")
 
     # Método para deletar um documento
-    def delete_data(self, collection_name: str, search_criteria: dict) -> None:
+    def delete_data(self, collection_name : str, search_criteria : dict) -> None:
         try:
             collection = self.__school_system_db[collection_name]
             document = collection.find_one(search_criteria)
@@ -67,7 +69,7 @@ class DataBase:
             print(f"Erro inesperado ao deletar documento: {e}")
 
     # Método para atualizar dados do banco de dados
-    def update_data(self, collection_name: str, search_criteria: dict, update_fields: dict) -> None:
+    def update_data(self, collection_name : str, search_criteria : dict, update_fields : dict) -> None:
         try:
             collection = self.__school_system_db[collection_name]
             resultado = collection.update_one(search_criteria, {'$set': update_fields})
