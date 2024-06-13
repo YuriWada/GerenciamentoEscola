@@ -5,6 +5,7 @@ Author: Julia Raposo
 '''
 
 from database import DataBase
+db = DataBase()
 
 class Usuario:
     def __init__(self, nome : str, idade : int, endereco : str, telefone: str, email : str, login : str, nivel : int) -> None:
@@ -15,9 +16,9 @@ class Usuario:
         self.email = email
         self.nivel = nivel
         self._login = login
-        self.db = DataBase()
 
     '''def excluir_conta(self) -> None:'''
+
 
 
 
@@ -26,6 +27,7 @@ class Aluno(Usuario):
         super().__init__(nome, idade, endereco, telefone, email, login, nivel)
         self.curso = curso
         self.matricula = matricula
+        
 
 
     '''def ver_notas() -> None:'''
@@ -34,7 +36,7 @@ class Aluno(Usuario):
 
 
 class Staff(Usuario):
-    def __init__(self, nome: str, idade: int, endereco: str, telefone: str, email: str, login: str, funcao : str, salario: str, nivel : int) -> None:
+    def __init__(self, nome: str, idade: int, endereco: str, telefone: str, email: str, login: str, salario: str, nivel : int) -> None:
         super().__init__(nome, idade, endereco, telefone, email, login, nivel)
         self.salario = salario
 
@@ -44,7 +46,9 @@ class Professor(Staff):
         super().__init__(nome, idade, endereco, telefone, email, login, funcao, salario, nivel)
         self.materia = materia
     
-    '''def adicionar_notas()'''
+    '''def adicionar_notas(self, db) -> None:'''
+        
+        
 
     '''def alterar_notas()'''
 
