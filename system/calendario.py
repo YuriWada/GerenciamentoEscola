@@ -7,13 +7,13 @@ class Calendario:
 
     # Insere um evento no calendário escolar
     def insert_event(self, dict : dict) -> bool:
-        if self.db.query_data("Calendario", dict):
-            infos = self.db.query_data("Calendario", dict)
+        if self.db.query_data(self.nome, dict):
+            infos = self.db.query_data(self.nome, dict)
             if dict['nome'] == infos[0]['nome']:
                 print("Evento já existente!")
                 return False
         
-        self.db.insert_data("Calendario", dict)
+        self.db.insert_data(self.nome, dict)
         print("Evento criado com sucesso!")
         return True
     
@@ -21,15 +21,15 @@ class Calendario:
     def query_event(self, dict : dict = None) -> list:
         infos = []
         if dict:
-            infos = self.db.query_data("Calendario", dict)
+            infos = self.db.query_data(self.nome, dict)
         else:
-            infos = self.db.query_data("Calendario")
+            infos = self.db.query_data(self.nome)
         return infos
     
     # Atualiza um evento no calendário escolar
     def update_event(self, dict : dict) -> None:
-        self.db.update_data("Calendario", dict)
+        self.db.update_data(self.nome, dict)
 
     # Deleta um evento no calendário escolar
     def delete_event(self, dict : dict) -> None:
-        self.db.delete_data("Calendario", dict)
+        self.db.delete_data(self.nome, dict)

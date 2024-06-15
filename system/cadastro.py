@@ -120,7 +120,7 @@ class CadastroStaff(Cadastro):
             print(f"Erro ao salvar: {e}")
 
 class CadastroTurma:
-    def __init__(self, nome : str, materia : str, horarios : dict, professor : dict = None, alunos : List[dict] = None) -> None:
+    def __init__(self, nome : str, materia : str, horarios : List[dict], professor : dict = None, alunos : List[dict] = None) -> None:
         self.nome = nome
         self.materia = materia
         self.horarios = horarios
@@ -131,8 +131,8 @@ class CadastroTurma:
 
     # Verifica se uma aula já foi cadastrada no horário
     def validacao_dados(self) -> bool:
-        if self.calendario.query_event(self.horarios):
-            print("Aula já cadastrada neste horário!")
+        if self.calendario.query_event({"horarios": self.horarios}):
+            print("Aula já cadastrada em horário indicado!")
             return True
         return False
 

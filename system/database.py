@@ -32,7 +32,7 @@ class DataBase:
         except errors.PyMongoError as e:
             print(f"Erro ao inserir dados no MongoDB: {e}")
         except Exception as e:
-            print(f"Erro inesperado ao inserir dados: {e}")
+            print(f"Erro ao inserir dados: {e}")
 
     # Método para fazer consultas no banco de dados
     def query_data(self, collection_name : str, query : dict = None) -> dict:
@@ -46,7 +46,7 @@ class DataBase:
         except errors.PyMongoError as e:
             print(f"Erro ao consultar dados no MongoDB: {e}")
         except Exception as e:
-            print(f"Erro inesperado ao consultar dados: {e}")
+            print(f"Erro ao consultar dados: {e}")
 
     # Método para deletar um documento
     def delete_data(self, collection_name : str, search_criteria : dict) -> None:
@@ -66,7 +66,7 @@ class DataBase:
         except errors.PyMongoError as e:
             print(f"Erro ao deletar documento no Banco de Dados: {e}")
         except Exception as e:
-            print(f"Erro inesperado ao deletar documento: {e}")
+            print(f"Erro ao deletar documento: {e}")
 
     # Método para atualizar dados do banco de dados
     def update_data(self, collection_name : str, search_criteria : dict, update_fields : dict) -> None:
@@ -80,4 +80,4 @@ class DataBase:
         except errors.PyMongoError as e:
             print(f"Erro ao atualizar documento no Banco de Dados: {e}")
         except Exception as e:
-            print(f"Erro inesperado ao atualizar documento: {e}")
+            print(f"Erro ao atualizar documento: {e}")
