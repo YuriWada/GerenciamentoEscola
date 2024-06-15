@@ -1,7 +1,8 @@
 from database import DataBase
 
-class Eventos:
-    def __init__(self) -> None:
+class Calendario:
+    def __init__(self, nome : str = "Calendario") -> None:
+        self.nome = nome
         self.db = DataBase()
 
     # Insere um evento no calendário escolar

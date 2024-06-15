@@ -2,7 +2,7 @@ import hashlib
 from abc import ABC, abstractmethod
 from database import DataBase
 from typing import List, Type
-from calendario import Eventos
+from calendario import Calendario
 # from usuario import *
 
 class Cadastro(ABC):
@@ -127,11 +127,11 @@ class CadastroTurma:
         self.professor = professor
         self.alunos = alunos
         self.db = DataBase()
-        self.eventos = Eventos()
+        self.calendario = Calendario()
 
     # Verifica se uma aula já foi cadastrada no horário
     def validacao_dados(self) -> bool:
-        if self.eventos.query_event(self.horarios):
+        if self.calendario.query_event(self.horarios):
             print("Aula já cadastrada neste horário!")
             return True
         return False
