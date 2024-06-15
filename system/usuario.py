@@ -1,25 +1,21 @@
+from abc import ABC, abstractmethod
 from database import DataBase
-db = DataBase()
 
-class Usuario:
-    def __init__(self, nome : str, idade : int, endereco : str, telefone: str, email : str, login : str, nivel : int) -> None:
+class Usuario(ABC):
+    def __init__(self, nome: str, idade: int, endereco: str, telefone: str, email: str, login: str) -> None:
         self.nome = nome
         self.idade = idade
         self.endereco = endereco
         self.telefone = telefone
         self.email = email
-        self.nivel = nivel
         self._login = login
 
-
 class Aluno(Usuario):
-    def __init__(self, nome : str, idade : int, endereco : str, telefone: str, email : str, login : str, curso : str, matricula : str, nivel : int) -> None:
-        super().__init__(nome, idade, endereco, telefone, email, login, nivel)
+    def __init__(self, nome : str, idade : int, endereco : str, telefone: str, email : str, login : str, curso : str, matricula : str) -> None:
+        super().__init__(nome, idade, endereco, telefone, email, login)
         self.curso = curso
         self.matricula = matricula
         
-
-
     '''def ver_notas() -> None:'''
 
     '''def ver_horario() -> None:'''
