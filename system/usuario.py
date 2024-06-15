@@ -20,29 +20,23 @@ class Aluno(Usuario):
 
     '''def ver_horario() -> None:'''
 
-
-class Staff(Usuario):
-    def __init__(self, nome: str, idade: int, endereco: str, telefone: str, email: str, login: str, salario: str, nivel : int) -> None:
-        super().__init__(nome, idade, endereco, telefone, email, login, nivel)
-        self.salario = salario
-
-
-class Professor(Staff):
+class Professor(Usuario):
     def __init__(self, nome: str, idade: int, endereco: str, telefone: str, email: str, login: str, salario: str, disciplina: str, nivel : int) -> None:
         super().__init__(nome, idade, endereco, telefone, email, login, salario, nivel)
+        self.salario = salario
         self.disciplina = disciplina
     
     '''def adicionar_notas(self, db) -> None:'''
         
     '''def alterar_notas()'''
 
-class CorpoEstudantil(Staff):
+class Staff(Usuario):
     def __init__(self, nome: str, idade: int, endereco: str, telefone: str, email: str, login: str, cargo: str, salario: str) -> None:
         super().__init__(nome, idade, endereco, telefone, email, login, salario)
         self.cargo = cargo
     
     def deletar_usuario(colecao, criterio) -> None:
-        db.delete_data(colecao, criterio)
+        pass
 
 
 

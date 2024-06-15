@@ -1,6 +1,9 @@
 import hashlib
 from abc import ABC, abstractmethod
 from database import DataBase
+from typing import List, Type
+from calendario import Eventos
+# from usuario import *
 
 class Cadastro(ABC):
     def __init__(self, nome : str, idade : int, endereco : str, telefone : str, email : str, login : str) -> None:
@@ -115,3 +118,36 @@ class CadastroStaff(Cadastro):
             print("Dados cadastrados com sucesso!")
         except Exception as e:
             print(f"Erro ao salvar: {e}")
+
+class CadastroTurma:
+    def __init__(self, nome : str, materia : str, horarios : dict, professor : dict = None, alunos : List[dict] = None) -> None:
+        self.nome = nome
+        self.materia = materia
+        self.horarios = horarios
+        self.professor = professor
+        self.alunos = alunos
+        self.db = DataBase()
+        self.eventos = Eventos()
+
+    # Verifica se uma aula já foi cadastrada no horário
+    def validacao_dados(self) -> bool:
+        if self.eventos.query_event(self.horarios):
+            print("Aula já cadastrada neste horário!")
+            return True
+        return False
+
+    def save(self) -> None:
+        try:
+            if not self.validacao_dados():
+                data = {
+                    "materia": self.materia,
+                    "horarios": self.horarios,
+                    "professor": self.professor,
+                    "alunos": self.alunos
+                }
+                self.db.insert_data(self.nome, data)
+                print("Turma cadastrada com sucesso!")
+            else:
+                print("Turma não cadastrada, tente novamente!")
+        except Exception as e:
+            print(f"Erro ao cadastrar: {e}")

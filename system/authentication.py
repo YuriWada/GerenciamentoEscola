@@ -8,5 +8,4 @@ class Authentication:
     def auth(self, collection : str, query : dict) -> bool:
         if self._db.query_data(collection, query):
             return True
-        else:
-            return False
+        return False

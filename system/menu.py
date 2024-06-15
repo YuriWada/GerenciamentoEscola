@@ -58,7 +58,7 @@ class MenuAluno(Menu):
     def __init__(self, aluno : object) -> None:
         self.aluno = aluno
         super().__init__(f"Olá, {aluno.nome}!")
-        self._options = ['Ver nota', 'Ver turmas', 'Acessar calendário']
+        self._options = ['Ver notas', 'Ver turmas', 'Acessar calendário']
 
     def next(self, option : int) -> None:
         if option == 1:
