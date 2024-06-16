@@ -81,9 +81,46 @@ staff5.save()
 
 # db.update_data("Alunos", {'nome': 'João'}, {'idade': 21})
 
-print("Informações de todos os Alunos")
+"""print("Informações de todos os Alunos")
 info_data_all = db.query_data("Alunos")
 print(info_data_all)
 print("======================================================")
 info_data = db.query_data("Alunos", {"nome": "Maria"})
-print(info_data)
+print(info_data)"""
+
+
+# Horários para os casos de teste
+horario1 = ["10:30 01/07/2024", "13:45 05/07/2024", "16:00 10/07/2024"]
+horario2 = ["09:00 02/07/2024", "14:30 06/07/2024", "17:15 12/07/2024"]
+horario3 = ["08:15 03/07/2024", "12:00 07/07/2024", "15:30 13/07/2024"]
+horario4 = ["14:00 15/07/2024", "16:30 18/07/2024", "09:45 22/07/2024"]
+horario5 = ["11:15 16/07/2024", "13:00 20/07/2024", "10:30 24/07/2024"]
+
+alunos = [
+    {"nome": "Maria", "matricula": "2021002"},
+    {"nome": "Ana", "matricula": "2021003"},
+    {"nome": "Pedro", "matricula": "2021004"},
+    {"nome": "Carla", "matricula": "2021005"},
+    {"nome": "João", "matricula": "2021001"}
+]
+
+
+# Caso de teste 1
+turma1 = CadastroTurma("Turma001", "Matemática", horario1, "Maria", alunos)
+turma1.save()
+
+# Caso de teste 2
+turma2 = CadastroTurma("Turma002", "Física", horario2, "João", alunos)
+turma2.save()
+
+# Caso de teste 3
+turma3 = CadastroTurma("Turma003", "História", horario3, "Ana", alunos)
+turma3.save()
+
+# Caso de teste 4
+turma4 = CadastroTurma("Turma004", "Química", horario4, "Pedro", alunos)
+turma4.save()
+
+# Caso de teste 5
+turma5 = CadastroTurma("Turma005", "Biologia", horario5, "Carla", alunos)
+turma5.save()

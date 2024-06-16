@@ -49,11 +49,12 @@ class Cadastro(ABC):
 
 # Cadastro do Aluno
 class CadastroAluno(Cadastro):
-    def __init__(self, nome : str, idade : int, endereco : str, telefone : str, email : str, login : str, senha : str, curso : str, matricula : str) -> None:
+    def __init__(self, nome : str, idade : int, endereco : str, telefone : str, email : str, login : str, senha : str, curso : str, matricula : str, turmas_matriculadas : List[str]) -> None:
         super().__init__(nome, idade, endereco, telefone, email, login)
         self.curso = curso
         self.matricula = matricula
         self.__senha = senha
+        self.turmas_matriculadas = turmas_matriculadas
 
     def save(self) -> None:
         try:
@@ -66,7 +67,8 @@ class CadastroAluno(Cadastro):
                 "login": self._login,
                 "senha": self.__senha,
                 "curso": self.curso,
-                "matricula": self.matricula
+                "matricula": self.matricula,
+                "turmas_matriculadas" : self.turmas_matriculadas
             }
             self.db.insert_data("Alunos", data)
             print("Dados cadastrados com sucesso!")
@@ -120,32 +122,43 @@ class CadastroStaff(Cadastro):
             print(f"Erro ao salvar: {e}")
 
 class CadastroTurma:
-    def __init__(self, nome : str, materia : str, horarios : List[dict], professor : dict = None, alunos : List[dict] = None) -> None:
+    def __init__(self, nome : str, materia : str, horarios : List[str], professor : str, alunos : List[dict] = None) -> None:
         self.nome = nome
         self.materia = materia
         self.horarios = horarios
         self.professor = professor
         self.alunos = alunos
         self.db = DataBase()
-        self.calendario = Calendario()
+        # self.calendario = Calendario()
 
-    # Verifica se uma aula já foi cadastrada no horário
+    # Verifica se uma aula já foi cadastrada no horário indicado
     def validacao_dados(self) -> bool:
-        if self.calendario.query_event({"horarios": self.horarios}):
-            print("Aula já cadastrada em horário indicado!")
+        try:
+            turmas = self.db.query_data("Turmas")
+            lista_horarios = []
+            if turmas:
+                for turma in turmas:
+                    lista_horarios.append(turma["horarios"])
+            for horarios in lista_horarios:
+                if sorted(self.horarios) == sorted(horarios):
+                    print("Aula já cadastrada em horário indicado!")
+                    return False
             return True
-        return False
+        except Exception as e:
+            print(f"Erro ao validar dados: {e}")
 
     def save(self) -> None:
         try:
-            if not self.validacao_dados():
+            if self.validacao_dados():
                 data = {
+                    "nome": self.nome,
                     "materia": self.materia,
                     "horarios": self.horarios,
                     "professor": self.professor,
                     "alunos": self.alunos
                 }
-                self.db.insert_data(self.nome, data)
+                self.db.insert_data("Turmas", data)
+                self.db.empty_collection(self.nome)
                 print("Turma cadastrada com sucesso!")
             else:
                 print("Turma não cadastrada, tente novamente!")

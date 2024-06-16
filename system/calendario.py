@@ -9,7 +9,7 @@ class Calendario:
     def insert_event(self, dict : dict) -> bool:
         if self.db.query_data(self.nome, dict):
             infos = self.db.query_data(self.nome, dict)
-            if dict['nome'] == infos[0]['nome']:
+            if dict['nome'] == infos[0].get('nome'):
                 print("Evento já existente!")
                 return False
         

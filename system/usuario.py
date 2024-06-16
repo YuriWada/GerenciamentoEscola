@@ -42,22 +42,29 @@ class Aluno(Usuario):
             return []
         horarios = []
         for turma in self.turmas_matriculadas:
-            infos = self.db.query_data(turma, {"nome": self.nome})
+            infos = self.db.query_data("Turmas", {"nome": self.nome})
             if infos:
-                horario = {"turma": infos[0]['nome'], "horarios": infos[0]['horarios']}
+                horario = {"turma": infos[0].get('nome'), "horarios": infos[0].get('horarios', 'Horarios não encontrados')}
                 horarios.append(horario)
             else:
                 print(f"Nenhuma informação encontrada para o aluno {self.nome} na turma {turma}.")
         return horarios
+    
+    @property
+    def turmas_matriculadas(self) -> list:
+        return self.turmas_matriculadas
 
 class Professor(Usuario):
-    def __init__(self, nome: str, idade: int, endereco: str, telefone: str, email: str, login: str, salario: str, disciplina: str, nivel : int) -> None:
+    def __init__(self, nome: str, idade: int, endereco: str, telefone: str, email: str, login: str, salario: str, turmas : List[str], nivel : int) -> None:
         super().__init__(nome, idade, endereco, telefone, email, login, salario, nivel)
         self.salario = salario
-        self.disciplina = disciplina
+        self.turmas = turmas
     
-    def adicionar_notas(self) -> None:
+    def adicionar_notas(self, turma : str, aluno : str) -> None:
         pass
+        """if turma in self.turmas:
+            self.db.query_data(turma, {"nome"})"""
+        
         
     '''def alterar_notas()'''
 

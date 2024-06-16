@@ -81,3 +81,13 @@ class DataBase:
             print(f"Erro ao atualizar documento no Banco de Dados: {e}")
         except Exception as e:
             print(f"Erro ao atualizar documento: {e}")
+
+    # Cria nova coleção vazia
+    def empty_collection(self, collection_name : str) -> None:
+        try:
+            collection = self.__school_system_db[collection_name]
+            collection.create_index("fake_index")
+        except errors.PyMongoError as e:
+            print(f"Erro ao criar nova coleção no Banco de Dados: {e}")
+        except Exception as e:
+            print(f"Erro ao criar coleção: {e}")

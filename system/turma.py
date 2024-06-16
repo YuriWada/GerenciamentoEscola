@@ -4,12 +4,8 @@ from database import DataBase
 from typing import List
 
 class Turma(ABC):
-    def __init__(self, nome : str, materia : str, horarios : List[str], professor : dict = None, alunos : List[dict] = None) -> None:
+    def __init__(self, nome : str) -> None:
         self.nome = nome
-        self.materia = materia
-        self.horarios = horarios
-        self.professor = professor
-        self.alunos = alunos
         self.db = DataBase()
 
     def media_notas(self) -> float:
@@ -39,6 +35,10 @@ class Turma(ABC):
 
     def horarios_turma(self) -> list:
         try:
-            return self.horarios
+            infos = self.db.query_data(self.nome, {"nomes"})
+            if not infos:
+                raise ValueError("Nenhuma informação sobre a turma registrada no sistema!")
+            horarios = [info['horarios'] for info in infos if 'horarios' in info]
+            return horarios
         except Exception as e:
             print(f"Erro ao encontrar os horarios: {e}")
