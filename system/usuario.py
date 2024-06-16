@@ -37,7 +37,7 @@ class Aluno(Usuario):
         """Método para buscar as notas de cada turma do aluno
 
         Returns:
-            list: lista com as notas do aluno
+            list: lista de dicionários com as notas do aluno. {"Turma", "nota"}
         """
         if not self.turmas_matriculadas:
             print(f"O aluno {self.nome} não está matriculado em nenhuma turma!")
@@ -71,7 +71,7 @@ class Aluno(Usuario):
                 print(f"Nenhuma informação encontrada para o aluno {self.nome} na turma {turma}.")
         return horarios
 
-    def turmas_matriculadas(self) -> list:
+    def busca_turmas_matriculadas(self) -> list:
         """Método para buscar as turmas matriculadas do aluno
 
         Returns:

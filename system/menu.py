@@ -2,6 +2,7 @@ from abc import ABC, abstractmethod
 from authentication import Authentication
 from usuario import *
 from database import DataBase
+from typing import Type
 
 class Menu(ABC):
     def __init__(self, title : str) -> None:
@@ -87,7 +88,7 @@ class MenuInicial(Menu):
             return self
 
 class MenuAluno(Menu):
-    def __init__(self, aluno : object) -> None:
+    def __init__(self, aluno : Type[Aluno]) -> None:
         """Construtor da classe MenuAluno
 
         Args:
@@ -106,10 +107,25 @@ class MenuAluno(Menu):
             object: retorna um objeto do próximo menu
         """
         if option == 1:
+            notas = self.aluno.buscar_notas()
+            if notas:
+                for nota in notas:
+                    print(f"Turma: {nota['turma']}, nota: {nota['nota']}")
+            else:
+                print("Nenhuma nota registrada no sistema!")
+            return self
+        elif option == 2:
+            turmas = self.aluno.busca_turmas_matriculadas()
+            if turmas:
+                print("Turma(s) matriculada(s):")
+                for turma in turmas:
+                    print(f"> {turma}")
+            else:
+                print("O aluno não está matriculado em nenhuma turma!")
             return self
 
 class MenuProfessor(Menu):
-    def __init__(self, professor : object) -> None:
+    def __init__(self, professor : Type[Professor]) -> None:
         """Construtor da classe MenuProfessor
 
         Args:
