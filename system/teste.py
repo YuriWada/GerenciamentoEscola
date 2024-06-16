@@ -15,12 +15,12 @@ class TesteCadastro:
                 if disciplina is None:
                     raise ValueError("Insira disciplina")
                 cadastro = CadastroProfessor(nome, idade, endereco, telefone, email, login, senha, disciplina, self.db)
-            elif tipo == "staff":
+            elif tipo == "diretoria":
                 if cargo is None:
                     raise ValueError("Insira o cargo")
-                cadastro = CadastroStaff(nome, idade, endereco, telefone, email, login, senha, cargo, self.db)
+                cadastro = CadastroDiretoria(nome, idade, endereco, telefone, email, login, senha, cargo, self.db)
             else:
-                raise ValueError("Tipo de cadastro inválido. Deve ser 'aluno', 'professor' ou 'staff'!!")
+                raise ValueError("Tipo de cadastro inválido. Deve ser 'aluno', 'professor' ou 'diretoria'!!")
             
             cadastro.save()
             print(f"Cadastro de {tipo} testado com sucesso.")
@@ -64,21 +64,21 @@ aluno5 = CadastroAluno("Carla", 19, "Rua E, 654", "333444555", "carla@example.co
 aluno5.save()"""
 
 """
-# Staff
-staff1 = CadastroStaff("Carlos", 40, "Rua C, 789", "123987456", "carlos@example.com", "carlos123", "senha789", "Administrador")
-staff1.save()
+# Diretoria
+diretoria1 = CadastroDiretoria("Carlos", 40, "Rua C, 789", "123987456", "carlos@example.com", "carlos123", "senha789", "Administrador")
+diretoria1.save()
 
-staff2 = CadastroStaff("Mariana", 35, "Avenida D, 456", "987654321", "mariana@example.com", "mariana456", "senha456", "Secretária")
-staff2.save()
+diretoria2 = CadastroDiretoria("Mariana", 35, "Avenida D, 456", "987654321", "mariana@example.com", "mariana456", "senha456", "Secretária")
+diretoria2.save()
 
-staff3 = CadastroStaff("Antônio", 38, "Travessa E, 789", "111222333", "antonio@example.com", "antonio789", "senha789", "Técnico de Informática")
-staff3.save()
+diretoria3 = CadastroDiretoria("Antônio", 38, "Travessa E, 789", "111222333", "antonio@example.com", "antonio789", "senha789", "Técnico de Informática")
+diretoria3.save()
 
-staff4 = CadastroStaff("Luciana", 42, "Rua F, 321", "777666555", "luciana@example.com", "luciana456", "senha321", "Bibliotecária")
-staff4.save()
+diretoria4 = CadastroDiretoria("Luciana", 42, "Rua F, 321", "777666555", "luciana@example.com", "luciana456", "senha321", "Bibliotecária")
+diretoria4.save()
 
-staff5 = CadastroStaff("Fernando", 37, "Rua G, 654", "333444555", "fernando@example.com", "fernando123", "senha654", "Contador")
-staff5.save()
+diretoria5 = CadastroDiretoria("Fernando", 37, "Rua G, 654", "333444555", "fernando@example.com", "fernando123", "senha654", "Contador")
+diretoria5.save()
 """
 # db.delete_data("Professores", {'nome': 'Maria'})
 

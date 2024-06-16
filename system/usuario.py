@@ -1,7 +1,11 @@
+import random
+from datetime import datetime
 from abc import ABC, abstractmethod
 from database import DataBase
 from turma import Turma
 from typing import List
+from cadastro import *
+from cadastroturma import *
 
 class Usuario(ABC):
     def __init__(self, nome: str, idade: int, endereco: str, telefone: str, email: str, login: str) -> None:
@@ -94,9 +98,87 @@ class Professor(Usuario):
     '''def alterar_notas()'''
 
 class Diretoria(Usuario):
-    def __init__(self, nome: str, idade: int, endereco: str, telefone: str, email: str, login: str, cargo: str, salario: str) -> None:
-        super().__init__(nome, idade, endereco, telefone, email, login, salario)
+    def __init__(self, nome: str, idade: int, endereco: str, telefone: str, email: str, login: str, cargo: str) -> None:
+        super().__init__(nome, idade, endereco, telefone, email, login)
         self.cargo = cargo
+
+    def cadastrar_aluno(self) -> None:
+        print("> Cadastro de novo aluno")
+        print("Informações pessoais")
+        nome = input("> Insira o nome do aluno:")
+        idade = int(input("> Insira a idade do aluno:"))
+        endereco = input("> Insira o endereço do aluno:")
+        telefone = input("> Insira o telefone do aluno")
+        email = input("> Insira o email do aluno:")
+        curso = input("> Insira o curso do aluno:")
+
+        print("Informações de cadastro no sistema")
+        login = input("> Insira o login do aluno:")
+        senha = input("> Insira a senha para o aluno:")
+        
+        print("Gerando número de matrícula...")
+        now = datetime.now()
+        ano_corrente = now.year
+        while True:
+            numero_aleatorio = random.randint(100, 999)
+            matricula = f"{ano_corrente}{numero_aleatorio}"
+            
+            # Verifica se a matrícula já existe no banco de dados
+            if not self.db.query_data("Alunos", {"matricula": matricula}):
+                break
+        print(f"Número de matrícula gerado: {matricula}")
+
+        print("> Selecione as turmas em que deseja matricular o aluno:")
+        infos = self.db.query_data("Turmas")
+        for e, info in enumerate(infos):
+            print(f"{e+1}. {info.get('nome')}")
+        print(">Insira o nome, um de cada vez, da turma em que deseja matricular o estudante (0 para cancelar):")
+        turmas = []
+        while True:
+            turma = input()
+            if turma == 0:
+                break
+            turmas.append(turma)
+        
+        cadastroturma = CadastroAlunoTurma(nome, matricula, turmas)
+        if cadastroturma.save():
+            cadastroaluno = CadastroAluno(nome, idade, endereco, telefone, email, login, senha, curso, matricula, turmas)
+            cadastroaluno.save()
+        else:
+            print("Não foi possível matricular o aluno!")
+    
+    def cadastrar_professor(self) -> None:
+        print("> Cadastro de novo professor")
+        print("Informações pessoais")
+        nome = input("> Insira o nome do professor:")
+        idade = int(input("> Insira a idade do professor:"))
+        endereco = input("> Insira o endereço do professor:")
+        telefone = input("> Insira o telefone do professor")
+        email = input("> Insira o email do professor:")
+        disciplina = input("> Insira a disciplina do professor:")
+
+        print("Informações de cadastro no sistema")
+        login = input("> Insira o login do professor:")
+        senha = input("> Insira a senha para o professor:")
+
+        print("> Selecione as turmas em que deseja cadastrar o professor:")
+        infos = self.db.query_data("Turmas")
+        for e, info in enumerate(infos):
+            print(f"{e+1}. {info.get('nome')}")
+        print(">Insira o nome, um de cada vez, da turma em que deseja matricular o docente (0 para cancelar):")
+        turmas = []
+        while True:
+            turma = input()
+            if turma == 0:
+                break
+            turmas.append(turma)
+
+        cadastroturma = CadastroProfessorTurma(nome, turmas)
+        if cadastroturma.save():
+            cadastroprofessor = CadastroProfessor(nome, idade, endereco, telefone, email, login, senha, disciplina, turmas)
+            cadastroprofessor.save()
+        else:
+            print("Não foi possível cadastrar o professor!")
     
     def deletar_usuario(colecao, criterio) -> None:
         pass
