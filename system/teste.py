@@ -1,5 +1,6 @@
 from cadastro import *
 from database import DataBase
+from turma import Turma
 
 class TesteCadastro:
     def testar_cadastro(self, tipo : str, nome : str, idade : int, endereco : str, telefone : str, email : str, login : str,
@@ -105,7 +106,7 @@ alunos = [
 ]
 
 
-# Caso de teste 1
+"""# Caso de teste 1
 turma1 = CadastroTurma("Turma001", "Matemática", horario1, "Maria", alunos)
 turma1.save()
 
@@ -123,4 +124,15 @@ turma4.save()
 
 # Caso de teste 5
 turma5 = CadastroTurma("Turma005", "Biologia", horario5, "Carla", alunos)
-turma5.save()
+turma5.save()"""
+"""
+db.insert_data("Turma001", {"nome": "João", "matricula": "2021001", "nota": None})
+db.insert_data("Turma001", {"nome": "Maria", "matricula": "2021002", "nota": None})
+db.insert_data("Turma001", {"nome": "Pedro", "matricula": "2021004", "nota": None})"""
+
+turma1 = Turma("Turma001")
+for nome in turma1.listagem_alunos():
+    print(f"Nome: {nome}")
+
+for horarios in turma1.horarios_turma():
+    print(f"Horarios: {horarios}")

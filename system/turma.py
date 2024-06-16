@@ -10,7 +10,7 @@ class Turma(ABC):
 
     def media_notas(self) -> float:
         try:
-            infos = self.db.query_data(self.nome, {"notas"})
+            infos = self.db.query_data(self.nome, {})
             notas = [info['nota'] for info in infos if 'nota' in info]
             if not notas:
                 raise ValueError("Nenhuma nota registrada no sistema!")
@@ -23,7 +23,7 @@ class Turma(ABC):
 
     def listagem_alunos(self) -> list:
         try:
-            infos = self.db.query_data(self.nome, {"nomes"})
+            infos = self.db.query_data(self.nome)
             nomes = [info['nome'] for info in infos if 'nome' in info]
             if not nomes:
                 raise ValueError("Nenhum nome encontrado no sistema!")
@@ -35,7 +35,7 @@ class Turma(ABC):
 
     def horarios_turma(self) -> list:
         try:
-            infos = self.db.query_data(self.nome, {"nomes"})
+            infos = self.db.query_data("Turmas", {"nome": self.nome})
             if not infos:
                 raise ValueError("Nenhuma informação sobre a turma registrada no sistema!")
             horarios = [info['horarios'] for info in infos if 'horarios' in info]
