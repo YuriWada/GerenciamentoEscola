@@ -30,7 +30,7 @@ class TesteCadastro:
 
 db = DataBase()
 
-# Professores
+"""# Professores
 professor1 = CadastroProfessor("Maria", 35, "Rua B, 456", "987654321", "maria@example.com", "maria123", "senha456", "Matemática", ["Turma001"])
 professor1.save()
 
@@ -60,7 +60,7 @@ aluno4 = CadastroAluno("Pedro", 23, "Rua D, 321", "777666555", "pedro@example.co
 aluno4.save()
 
 aluno5 = CadastroAluno("Carla", 19, "Rua E, 654", "333444555", "carla@example.com", "carla123", "senha654", "Psicologia", "2021005", ["Turma001", "Turma002", "Turma005"])
-aluno5.save()
+aluno5.save()"""
 
 """
 # Staff
