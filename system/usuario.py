@@ -49,15 +49,14 @@ class Aluno(Usuario):
             else:
                 print(f"Nenhuma informação encontrada para o aluno {self.nome} na turma {turma}.")
         return horarios
-    
-    @property
+
     def turmas_matriculadas(self) -> list:
         return self.turmas_matriculadas
 
 class Professor(Usuario):
-    def __init__(self, nome: str, idade: int, endereco: str, telefone: str, email: str, login: str, salario: str, turmas : List[str], nivel : int) -> None:
-        super().__init__(nome, idade, endereco, telefone, email, login, salario, nivel)
-        self.salario = salario
+    def __init__(self, nome: str, idade: int, endereco: str, telefone: str, email: str, login: str, disciplina : str, turmas : List[str]) -> None:
+        super().__init__(nome, idade, endereco, telefone, email, login)
+        self.disciplina = disciplina
         self.turmas = turmas
     
     def adicionar_notas(self, turma : str, aluno : str) -> None:

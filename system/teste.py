@@ -30,38 +30,39 @@ class TesteCadastro:
 
 db = DataBase()
 
-"""# Professores
-professor1 = CadastroProfessor("Maria", 35, "Rua B, 456", "987654321", "maria@example.com", "maria123", "senha456", "Matemática")
+# Professores
+professor1 = CadastroProfessor("Maria", 35, "Rua B, 456", "987654321", "maria@example.com", "maria123", "senha456", "Matemática", ["Turma001"])
 professor1.save()
 
-professor2 = CadastroProfessor("João", 40, "Avenida X, 789", "999888777", "joao@example.com", "joao456", "senha789", "Física")
+professor2 = CadastroProfessor("João", 40, "Avenida X, 789", "999888777", "joao@example.com", "joao456", "senha789", "Física", ["Turma002"])
 professor2.save()
 
-professor3 = CadastroProfessor("Ana", 30, "Travessa Y, 123", "111222333", "ana@example.com", "ana789", "senha123", "História")
+professor3 = CadastroProfessor("Ana", 30, "Travessa Y, 123", "111222333", "ana@example.com", "ana789", "senha123", "História", ["Turma003"])
 professor3.save()
 
-professor4 = CadastroProfessor("Pedro", 45, "Rua Z, 321", "777666555", "pedro@example.com", "pedro456", "senha321", "Biologia")
+professor4 = CadastroProfessor("Pedro", 45, "Rua Z, 321", "777666555", "pedro@example.com", "pedro456", "senha321", "Biologia", ["Turma004"])
 professor4.save()
 
-professor5 = CadastroProfessor("Carla", 38, "Rua W, 654", "333444555", "carla@example.com", "carla123", "senha654", "Geografia")
+professor5 = CadastroProfessor("Carla", 38, "Rua W, 654", "333444555", "carla@example.com", "carla123", "senha654", "Geografia", ["Turma005"])
 professor5.save()
 
 # Alunos
-aluno1 = CadastroAluno("João", 20, "Rua A, 123", "123456789", "joao@example.com", "joao123", "senha123", "Engenharia", "2021001")
+aluno1 = CadastroAluno("João", 20, "Rua A, 123", "123456789", "joao@example.com", "joao123", "senha123", "Engenharia", "2021001", ["Turma001", "Turma002", "Turma003"])
 aluno1.save()
 
-aluno2 = CadastroAluno("Maria", 22, "Avenida B, 456", "987654321", "maria@example.com", "maria456", "senha456", "Medicina", "2021002")
+aluno2 = CadastroAluno("Maria", 22, "Avenida B, 456", "987654321", "maria@example.com", "maria456", "senha456", "Medicina", "2021002", ["Turma001", "Turma002", "Turma004"])
 aluno2.save()
 
-aluno3 = CadastroAluno("Ana", 21, "Travessa C, 789", "111222333", "ana@example.com", "ana789", "senha789", "Direito", "2021003")
+aluno3 = CadastroAluno("Ana", 21, "Travessa C, 789", "111222333", "ana@example.com", "ana789", "senha789", "Direito", "2021003", ["Turma001", "Turma002", "Turma003"])
 aluno3.save()
 
-aluno4 = CadastroAluno("Pedro", 23, "Rua D, 321", "777666555", "pedro@example.com", "pedro456", "senha321", "Administração", "2021004")
+aluno4 = CadastroAluno("Pedro", 23, "Rua D, 321", "777666555", "pedro@example.com", "pedro456", "senha321", "Administração", "2021004", ["Turma001", "Turma002", "Turma005"])
 aluno4.save()
 
-aluno5 = CadastroAluno("Carla", 19, "Rua E, 654", "333444555", "carla@example.com", "carla123", "senha654", "Psicologia", "2021005")
+aluno5 = CadastroAluno("Carla", 19, "Rua E, 654", "333444555", "carla@example.com", "carla123", "senha654", "Psicologia", "2021005", ["Turma001", "Turma002", "Turma005"])
 aluno5.save()
 
+"""
 # Staff
 staff1 = CadastroStaff("Carlos", 40, "Rua C, 789", "123987456", "carlos@example.com", "carlos123", "senha789", "Administrador")
 staff1.save()
@@ -130,9 +131,9 @@ db.insert_data("Turma001", {"nome": "João", "matricula": "2021001", "nota": Non
 db.insert_data("Turma001", {"nome": "Maria", "matricula": "2021002", "nota": None})
 db.insert_data("Turma001", {"nome": "Pedro", "matricula": "2021004", "nota": None})"""
 
-turma1 = Turma("Turma001")
+"""turma1 = Turma("Turma001")
 for nome in turma1.listagem_alunos():
     print(f"Nome: {nome}")
 
 for horarios in turma1.horarios_turma():
-    print(f"Horarios: {horarios}")
+    print(f"Horarios: {horarios}")"""

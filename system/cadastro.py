@@ -76,10 +76,11 @@ class CadastroAluno(Cadastro):
             print(f"Erro ao salvar: {e}")
     
 class CadastroProfessor(Cadastro):
-    def __init__(self, nome: str, idade: int, endereco: str, telefone: str, email: str, login: str, senha: str, disciplina: str) -> None:
+    def __init__(self, nome: str, idade: int, endereco: str, telefone: str, email: str, login: str, senha: str, disciplina: str, turmas_matriculadas : List[str]) -> None:
         super().__init__(nome, idade, endereco, telefone, email, login)
         self.disciplina = disciplina
         self.__senha = senha
+        self.turmas_matriculadas = turmas_matriculadas
 
     def save(self) -> None:
         try:
@@ -91,7 +92,8 @@ class CadastroProfessor(Cadastro):
                 "email": self.email,
                 "login": self._login,
                 "senha": self.__senha,
-                "disciplina": self.disciplina
+                "disciplina": self.disciplina,
+                "turmas_matriculadas": self.turmas_matriculadas
             }
             self.db.insert_data("Professores", data)
             print("Dados cadastrados com sucesso!")
