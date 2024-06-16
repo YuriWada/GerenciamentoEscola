@@ -5,17 +5,27 @@ from database import DataBase
 
 class Menu(ABC):
     def __init__(self, title : str) -> None:
+        """Construtor da classe Menu(abstrata)
+
+        Args:
+            title (str): título (nenhum)
+        """
         self._title = title
         self._options = []
         self._db = DataBase()
 
-    # Método que puxa o próximo menu de usuário
     @abstractmethod
     def next(self, option : int) -> None:
+        """Método para puxar o próximo menu
+
+        Args:
+            option (int): opções do menu
+        """
         pass
 
-    # Renderiza o menu
     def render(self) -> None:
+        """Renderiza o menu na interface de usuário
+        """
         border = '=' * (len(self._title) + 5)
         print(border)
         print(f"|| {self._title}")
@@ -28,11 +38,18 @@ class Menu(ABC):
 
 class MenuInicial(Menu):
     def __init__(self) -> None:
+        """Construtor da classe MenuInicial
+        """
         super().__init__("Bem-vindo")
         self._options = ['Área Aluno', 'Área Professor', 'Área Staff']
         self._auth = Authentication()
 
     def LoginSenha(self) -> dict:
+        """Renderiza a entrada de login e senha do usuário
+
+        Returns:
+            dict: dicionário com login e senha inseridos
+        """
         print("> Login:")
         login = input()
         print("> Senha:")
@@ -40,7 +57,14 @@ class MenuInicial(Menu):
         dict = {"login": login, "senha": senha}
         return dict
 
-    def next(self, option : int) -> None:
+    def next(self, option : int) -> object:
+        """Método com o próximo menu
+        Args:
+            option (int): opção escolhida
+
+        Returns:
+            object: retorna um objeto do próximo menu
+        """
         if option == 1:
             dict = self.LoginSenha()
             if self._auth.auth("Alunos", dict):
@@ -64,20 +88,44 @@ class MenuInicial(Menu):
 
 class MenuAluno(Menu):
     def __init__(self, aluno : object) -> None:
+        """Construtor da classe MenuAluno
+
+        Args:
+            aluno (object): instância da classe Aluno
+        """
         self.aluno = aluno
         super().__init__(f"Olá, {aluno.nome}, {aluno.matricula}!")
         self._options = ['Ver notas', 'Ver turmas', 'Acessar calendário']
 
     def next(self, option : int) -> None:
+        """Método com o próximo menu
+        Args:
+            option (int): opção escolhida
+
+        Returns:
+            object: retorna um objeto do próximo menu
+        """
         if option == 1:
             return self
 
 class MenuProfessor(Menu):
     def __init__(self, professor : object) -> None:
+        """Construtor da classe MenuProfessor
+
+        Args:
+            professor (object): instância da classe Professor
+        """
         self.professor = professor
         super().__init__(f"Olá, {professor.nome}!")
         self._options = ['Ver turmas', 'Acessar calendário']
 
     def next(self, option : int) -> None:
+        """Método com o próximo menu
+        Args:
+            option (int): opção escolhida
+
+        Returns:
+            object: retorna um objeto do próximo menu
+        """
         if option == 1:
             return self

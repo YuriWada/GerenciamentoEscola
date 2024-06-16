@@ -4,7 +4,9 @@ from menu import *
 
 class SchoolSystem:
     def run(self) -> None:
-        # Roda o menu inicial (interface de usuário)
+        """Roda o sistema de Gerenciamento da Escola.
+        Menu inicial
+        """
         menuinicial = MenuInicial()
         while menuinicial is not None:
             os.system('cls')

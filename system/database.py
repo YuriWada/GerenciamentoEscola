@@ -3,8 +3,12 @@ import os
 from pymongo import MongoClient, errors
 
 class DataBase:
-    # Construtor com tratamento de erros para senha, conexão e inicialização do BD
     def __init__(self) -> None:
+        """Construtor para configuração do banco de dados
+
+        Raises:
+            ValueError: senha não encontrada no arquivo de configurações ambientes (.env)
+        """
         # Database setup
         try:
             self.envy()
@@ -19,12 +23,18 @@ class DataBase:
         except Exception as e:
             print(f"Erro ao inicializar o Banco de Dados: {e}")
 
-    # Procura o arquivo .env no projeto
     def envy(self) -> None:
+        """Procura o arquivo .env no projeto
+        """
         load_dotenv(find_dotenv())
 
-    # Método para inserir dados no banco de dados
     def insert_data(self, collection_name : str, data : dict) -> None:
+        """Insere dados no banco de dados
+
+        Args:
+            collection_name (str): nome da coleção na qual se quer inserir os dados
+            data (dict): dados inseridos
+        """
         try:
             collection = self.__school_system_db[collection_name]
             inserted_id = collection.insert_one(data).inserted_id
@@ -34,8 +44,16 @@ class DataBase:
         except Exception as e:
             print(f"Erro ao inserir dados: {e}")
 
-    # Método para fazer consultas no banco de dados
     def query_data(self, collection_name : str, query : dict = None) -> dict:
+        """Faz pesquisa de dados no banco de dados
+
+        Args:
+            collection_name (str): nome da coleção na qual se quer pesquisar
+            query (dict, optional): dados pesquisados. Defaults to None.
+
+        Returns:
+            dict: uma lista com os dados encontrados
+        """
         try:
             collection = self.__school_system_db[collection_name]
             if query:
@@ -48,8 +66,13 @@ class DataBase:
         except Exception as e:
             print(f"Erro ao consultar dados: {e}")
 
-    # Método para deletar um documento
     def delete_data(self, collection_name : str, search_criteria : dict) -> None:
+        """Método para deletar informações do banco de dados
+
+        Args:
+            collection_name (str): nome da coleção na qual se quer deletar
+            search_criteria (dict): critérios de buscar para deletar as informações
+        """
         try:
             collection = self.__school_system_db[collection_name]
             document = collection.find_one(search_criteria)
@@ -68,8 +91,14 @@ class DataBase:
         except Exception as e:
             print(f"Erro ao deletar documento: {e}")
 
-    # Método para atualizar dados do banco de dados
     def update_data(self, collection_name : str, search_criteria : dict, update_fields : dict) -> None:
+        """Método para atualizar informações no banco de dados
+
+        Args:
+            collection_name (str): nome da coleção na qual se quer editar
+            search_criteria (dict): critérios de busca
+            update_fields (dict): campo a ser atualizado
+        """
         try:
             collection = self.__school_system_db[collection_name]
             resultado = collection.update_one(search_criteria, {'$set': update_fields})
@@ -82,8 +111,12 @@ class DataBase:
         except Exception as e:
             print(f"Erro ao atualizar documento: {e}")
 
-    # Cria nova coleção vazia
     def empty_collection(self, collection_name : str) -> None:
+        """Cria uma coleção vazia no banco de dados
+
+        Args:
+            collection_name (str): nome da coleção nova
+        """
         try:
             collection = self.__school_system_db[collection_name]
             collection.create_index("fake_index")
