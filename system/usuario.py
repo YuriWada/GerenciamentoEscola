@@ -93,7 +93,7 @@ class Professor(Usuario):
         
     '''def alterar_notas()'''
 
-class Staff(Usuario):
+class Diretoria(Usuario):
     def __init__(self, nome: str, idade: int, endereco: str, telefone: str, email: str, login: str, cargo: str, salario: str) -> None:
         super().__init__(nome, idade, endereco, telefone, email, login, salario)
         self.cargo = cargo

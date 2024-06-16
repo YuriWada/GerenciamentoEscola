@@ -163,7 +163,7 @@ class CadastroProfessor(Cadastro):
         except Exception as e:
             print(f"Erro ao salvar: {e}")
 
-class CadastroStaff(Cadastro):
+class CadastroDiretoria(Cadastro):
     def __init__(self, nome: str, idade: int, endereco: str, telefone: str, email: str, login: str, senha: str, cargo: str) -> None:
         super().__init__(nome, idade, endereco, telefone, email, login)
         self.cargo = cargo
@@ -181,7 +181,7 @@ class CadastroStaff(Cadastro):
                 "senha": self.__senha,
                 "cargo": self.cargo
             }
-            self.db.insert_data("Staff", data)
+            self.db.insert_data("Diretoria", data)
             print("Dados cadastrados com sucesso!")
         except Exception as e:
             print(f"Erro ao salvar: {e}")
