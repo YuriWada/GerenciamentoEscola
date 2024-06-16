@@ -21,7 +21,6 @@ class Cadastro(ABC):
         self.telefone = telefone
         self.email = email
         self._login = login
-        self.validar_dados()
 
         # Database setup
         self.db = DataBase()
@@ -78,7 +77,7 @@ class CadastroAluno(Cadastro):
 
 # Cadastro do Professor
 class CadastroProfessor(Cadastro):
-    def __init__(self, nome: str, idade: int, endereco: str, telefone: str, email: str, login: str, senha: str, disciplina: str, turmas_matriculadas : List[str]) -> None:
+    def __init__(self, nome: str, idade: int, endereco: str, telefone: str, email: str, login: str, senha: str, disciplina: str, turmas_matriculadas : List[str] = None) -> None:
         """Construtor da classe CadastroProfessor
 
         Args:

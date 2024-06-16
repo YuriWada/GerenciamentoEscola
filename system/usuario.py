@@ -105,20 +105,21 @@ class Diretoria(Usuario):
     def cadastrar_aluno(self) -> None:
         print("> Cadastro de novo aluno")
         print("Informações pessoais")
-        nome = input("> Insira o nome do aluno:")
-        idade = int(input("> Insira a idade do aluno:"))
-        endereco = input("> Insira o endereço do aluno:")
-        telefone = input("> Insira o telefone do aluno")
-        email = input("> Insira o email do aluno:")
-        curso = input("> Insira o curso do aluno:")
+        nome = input("> Insira o nome do aluno: ")
+        idade = int(input("> Insira a idade do aluno: "))
+        endereco = input("> Insira o endereço do aluno: ")
+        telefone = input("> Insira o telefone do aluno: ")
+        email = input("> Insira o email do aluno: ")
+        curso = input("> Insira o curso do aluno: ")
 
         print("Informações de cadastro no sistema")
-        login = input("> Insira o login do aluno:")
-        senha = input("> Insira a senha para o aluno:")
+        login = input("> Insira o login do aluno: ")
+        senha = input("> Insira a senha para o aluno: ")
         
         print("Gerando número de matrícula...")
         now = datetime.now()
         ano_corrente = now.year
+
         while True:
             numero_aleatorio = random.randint(100, 999)
             matricula = f"{ano_corrente}{numero_aleatorio}"
@@ -130,15 +131,32 @@ class Diretoria(Usuario):
 
         print("> Selecione as turmas em que deseja matricular o aluno:")
         infos = self.db.query_data("Turmas")
+
         for e, info in enumerate(infos):
             print(f"{e+1}. {info.get('nome')}")
-        print(">Insira o nome, um de cada vez, da turma em que deseja matricular o estudante (0 para cancelar):")
+
         turmas = []
-        while True:
-            turma = input()
-            if turma == 0:
-                break
-            turmas.append(turma)
+        i = 0
+        max_attempts = 5
+
+        while i < max_attempts:
+            try:
+                turma = input("Insira o nome da turma (ou 0 para cancelar): ").strip()
+                if turma == "0":
+                    break
+
+                # Verificar se a turma existe em infos
+                turma_existe = any(t['nome'] == turma for t in infos)
+                
+                if turma_existe:
+                    turmas.append(turma)
+                    i += 1
+                else:
+                    print("Turma não encontrada. Tente novamente.")
+            except Exception as e:
+                print(f"Erro ao processar a entrada: {e}")
+
+        print("Turmas adicionadas:", turmas)
         
         cadastroturma = CadastroAlunoTurma(nome, matricula, turmas)
         if cadastroturma.save():
@@ -150,28 +168,45 @@ class Diretoria(Usuario):
     def cadastrar_professor(self) -> None:
         print("> Cadastro de novo professor")
         print("Informações pessoais")
-        nome = input("> Insira o nome do professor:")
-        idade = int(input("> Insira a idade do professor:"))
-        endereco = input("> Insira o endereço do professor:")
-        telefone = input("> Insira o telefone do professor")
-        email = input("> Insira o email do professor:")
-        disciplina = input("> Insira a disciplina do professor:")
+        nome = input("> Insira o nome do professor: ")
+        idade = int(input("> Insira a idade do professor: "))
+        endereco = input("> Insira o endereço do professor: ")
+        telefone = input("> Insira o telefone do professor: ")
+        email = input("> Insira o email do professor: ")
+        disciplina = input("> Insira a disciplina do professor: ")
 
         print("Informações de cadastro no sistema")
-        login = input("> Insira o login do professor:")
-        senha = input("> Insira a senha para o professor:")
+        login = input("> Insira o login do professor: ")
+        senha = input("> Insira a senha para o professor: ")
 
         print("> Selecione as turmas em que deseja cadastrar o professor:")
         infos = self.db.query_data("Turmas")
         for e, info in enumerate(infos):
             print(f"{e+1}. {info.get('nome')}")
         print(">Insira o nome, um de cada vez, da turma em que deseja matricular o docente (0 para cancelar):")
+
         turmas = []
-        while True:
-            turma = input()
-            if turma == 0:
-                break
-            turmas.append(turma)
+        i = 0
+        max_attempts = 5
+
+        while i < max_attempts:
+            try:
+                turma = input("Insira o nome da turma (ou 0 para cancelar): ").strip()
+                if turma == "0":
+                    break
+
+                # Verificar se a turma existe em infos
+                turma_existe = any(t['nome'] == turma for t in infos)
+                
+                if turma_existe:
+                    turmas.append(turma)
+                    i += 1
+                else:
+                    print("Turma não encontrada. Tente novamente.")
+            except Exception as e:
+                print(f"Erro ao processar a entrada: {e}")
+
+        print("Turmas adicionadas:", turmas)
 
         cadastroturma = CadastroProfessorTurma(nome, turmas)
         if cadastroturma.save():
@@ -179,6 +214,14 @@ class Diretoria(Usuario):
             cadastroprofessor.save()
         else:
             print("Não foi possível cadastrar o professor!")
+
+    #def registrar_evento
+    #def editar_evento
+    #def apagar_evento
+    #def editar informações alunos e professores
+    #def enviar notificação de notas
+    #def consultar turmas
+    #def calcular aprovados e reprovados
     
     def deletar_usuario(colecao, criterio) -> None:
         pass

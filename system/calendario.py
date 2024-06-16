@@ -53,7 +53,7 @@ class Calendario:
         Args:
             dict (dict): critérios de busca para atualização do evento
         """
-        self.db.update_data(self.nome, dict)
+        self.db.update_data(self.nome, {'$set': dict})
 
     def delete_event(self, dict : dict) -> None:
         """Deleta um evento do calendário escolar

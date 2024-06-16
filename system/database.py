@@ -91,19 +91,19 @@ class DataBase:
         except Exception as e:
             print(f"Erro ao deletar documento: {e}")
 
-    def update_data(self, collection_name : str, search_criteria : dict, update_fields : dict) -> None:
+    def update_data(self, collection_name : str, search_criteria : dict, update_operations : dict) -> None:
         """Método para atualizar informações no banco de dados
 
         Args:
             collection_name (str): nome da coleção na qual se quer editar
             search_criteria (dict): critérios de busca
-            update_fields (dict): campo a ser atualizado
+            update_operations (dict): operações de atualização do MongoDB (ex: {'$set': {...}, '$push': {...}})
         """
         try:
             collection = self.__school_system_db[collection_name]
-            resultado = collection.update_one(search_criteria, {'$set': update_fields})
+            resultado = collection.update_one(search_criteria, update_operations)
             if resultado.modified_count > 0:
-                print(f"Alteração realizada com sucesso!")
+                print("Alteração realizada com sucesso!")
             else:
                 print("Nenhuma informação encontrada!")
         except errors.PyMongoError as e:
