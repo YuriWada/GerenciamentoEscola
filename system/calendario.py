@@ -1,3 +1,5 @@
+import calendar
+from datetime import datetime
 from database import DataBase
 
 class Calendario:
@@ -60,3 +62,40 @@ class Calendario:
             dict (dict): dicionário com os critérios de busca para exclusão do evento
         """
         self.db.delete_data(self.nome, dict)
+
+    def exibir_calendario(self) -> None:
+        """Exibe o calendário do mês atual com eventos registrados
+        """
+        now = datetime.now()
+        ano = now.year
+        mes = now.month
+        cal = calendar.TextCalendar(calendar.SUNDAY)
+        cal_str = cal.formatmonth(ano, mes)
+        print(cal_str)
+        eventos = self.query_event()
+        eventos_do_mes = [evento for evento in eventos if datetime.strptime(evento['data'], '%d/%m/%Y').month == mes and datetime.strptime(evento['data'], '%d/%m/%Y').year == ano]
+        if eventos_do_mes:
+            print("\nEventos Registrados:")
+            for evento in eventos_do_mes:
+                print(f"{evento['data']}: {evento['nome']}")
+        else:
+            print("\nNenhum evento registrado para este mês.")
+    
+    def exibir_calendario_anual(self) -> None:
+        """Exibe o calendário anual com eventos registrados
+        """
+        now = datetime.now()
+        ano = now.year
+        cal = calendar.TextCalendar(calendar.SUNDAY)
+        eventos = self.query_event()
+        for mes in range(1, 13):
+            cal_str = cal.formatmonth(ano, mes)
+            print(cal_str)
+            eventos_do_mes = [evento for evento in eventos if datetime.strptime(evento['data'], '%d/%m/%Y').month == mes and datetime.strptime(evento['data'], '%d/%m/%Y').year == ano]
+            if eventos_do_mes:
+                print("\nEventos Registrados:")
+                for evento in eventos_do_mes:
+                    print(f"{evento['data']}: {evento['nome']}")
+            else:
+                print("Nenhum evento registrado para este mês.")
+            print("\n" + "="*40 + "\n")

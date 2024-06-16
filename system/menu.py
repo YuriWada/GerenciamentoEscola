@@ -3,6 +3,7 @@ from authentication import Authentication
 from usuario import *
 from database import DataBase
 from typing import Type
+from calendario import Calendario
 
 class Menu(ABC):
     def __init__(self, title : str) -> None:
@@ -14,6 +15,7 @@ class Menu(ABC):
         self._title = title
         self._options = []
         self._db = DataBase()
+        self.calendario = Calendario()
 
     @abstractmethod
     def next(self, option : int) -> None:
@@ -83,8 +85,11 @@ class MenuInicial(Menu):
                 dados = professores[0]
                 professor = Professor(dados['nome'], dados['idade'], dados['endereco'], dados['telefone'], dados['email'], dados['login'], dados['disciplina'], dados['turmas_matriculadas'])
             return MenuProfessor(professor)
-        else:
+        elif option == 3:
             print("Área Staff")
+            return self
+        else:
+            print("Opção inválida! Tente novamente")
             return self
 
 class MenuAluno(Menu):
@@ -96,7 +101,7 @@ class MenuAluno(Menu):
         """
         self.aluno = aluno
         super().__init__(f"Olá, {aluno.nome}, {aluno.matricula}!")
-        self._options = ['Ver notas', 'Ver turmas', 'Acessar calendário']
+        self._options = ['Ver notas', 'Ver turmas', 'Acessar calendário Escolar']
 
     def next(self, option : int) -> None:
         """Método com o próximo menu
@@ -122,6 +127,23 @@ class MenuAluno(Menu):
                     print(f"> {turma}")
             else:
                 print("O aluno não está matriculado em nenhuma turma!")
+            return self
+        elif option == 3:
+            print("> 1. Exibir calendário do mês")
+            print("> 2. Exibir calendário do ano")
+            try:
+                sub_option = int(input("> Escolha uma opção: "))
+                if sub_option == 1:
+                    self.calendario.exibir_calendario()
+                elif sub_option == 2:
+                    self.calendario.exibir_calendario_anual()
+                else:
+                    print("Opção inválida! Tente novamente")
+            except ValueError:
+                print("Opção inválida! Por favor, insira um número.")
+            return self
+        else:
+            print("Opção inválida! Tente novamente")
             return self
 
 class MenuProfessor(Menu):

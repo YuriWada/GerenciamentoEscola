@@ -1,6 +1,7 @@
 from cadastro import *
 from database import DataBase
 from turma import Turma
+from calendario import Calendario
 
 class TesteCadastro:
     def testar_cadastro(self, tipo : str, nome : str, idade : int, endereco : str, telefone : str, email : str, login : str,
@@ -137,3 +138,8 @@ for nome in turma1.listagem_alunos():
 
 for horarios in turma1.horarios_turma():
     print(f"Horarios: {horarios}")"""
+
+cal = Calendario()
+"""cal.insert_event({'nome': 'Simulado Geral', 'data': '20/06/2024', 'hora': '10:00'})
+cal.insert_event({'nome': 'Reunião de Pais', 'data': '25/06/2024', 'hora': '14:00'})"""
+cal.exibir_calendario_anual()
