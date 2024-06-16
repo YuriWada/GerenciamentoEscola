@@ -42,7 +42,7 @@ class MenuInicial(Menu):
             if self._auth.auth("Alunos", dict):
                 alunos = self._db.query_data("Alunos", dict)
                 dados = alunos[0]
-                aluno = Aluno(dados['nome'], dados['idade'], dados['endereco'], dados['telefone'], dados['email'], dados['login'], dados['curso'], dados['matricula'])
+                aluno = Aluno(dados['nome'], dados['idade'], dados['endereco'], dados['telefone'], dados['email'], dados['login'], dados['curso'], dados['matricula'], dados['turmas_matriculadas'])
                 return MenuAluno(aluno)
             else:
                 print("> Erro ao autenticar, tente novamente!")
@@ -57,7 +57,7 @@ class MenuInicial(Menu):
 class MenuAluno(Menu):
     def __init__(self, aluno : object) -> None:
         self.aluno = aluno
-        super().__init__(f"Olá, {aluno.nome}!")
+        super().__init__(f"Olá, {aluno.nome}, {aluno.matricula}!")
         self._options = ['Ver notas', 'Ver turmas', 'Acessar calendário']
 
     def next(self, option : int) -> None:
