@@ -98,13 +98,28 @@ class Professor(Usuario):
         
     '''def alterar_notas()'''
 
+      #def enviar notificação de notas
+
 class Diretoria(Usuario):
     def __init__(self, nome: str, idade: int, endereco: str, telefone: str, email: str, login: str, cargo: str) -> None:
+        """Construtor da classe Diretoria. Corpo constituído pelos funcionários da escola.
+
+        Args:
+            nome (str): nome do funcionário
+            idade (int): idade do funcionário
+            endereco (str): endereço do funcionário
+            telefone (str): telefone do funcionário
+            email (str): email do funcionário
+            login (str): login a ser utilizado para logar no sistema
+            cargo (str): cargo do funcionário
+        """
         super().__init__(nome, idade, endereco, telefone, email, login)
         self.cargo = cargo
         self.calendario = Calendario()
 
     def cadastrar_aluno(self) -> None:
+        """Método utilizado para cadastrar um novo aluno no sistema
+        """
         print("> Cadastro de novo aluno")
         print("Informações pessoais")
         nome = input("> Insira o nome do aluno: ")
@@ -168,6 +183,8 @@ class Diretoria(Usuario):
             print("Não foi possível matricular o aluno!")
     
     def cadastrar_professor(self) -> None:
+        """Método para cadastrar um novo professor no sistema
+        """
         print("> Cadastro de novo professor")
         print("Informações pessoais")
         nome = input("> Insira o nome do professor: ")
@@ -218,6 +235,8 @@ class Diretoria(Usuario):
             print("Não foi possível cadastrar o professor!")
 
     def inserir_evento_calendario(self) -> None:
+        """Método para inserir um evento no calendário
+        """
         try:
             nome = input("> Insira o nome do evento: ")
             horario = input("> Insira o horário do evento (hh:mm): ")
@@ -242,6 +261,8 @@ class Diretoria(Usuario):
             print(f"Erro ao inserir evento no calendário: {e}")
 
     def modificar_evento_calendario(self) -> None:
+        """Método para modificar um evento existente no calendário
+        """
         try:
             nome = input("> Insira o nome do evento que quer alterar: ")
             horario = input("> Insira o horário do evento (hh:mm) que quer alterar: ")
@@ -290,6 +311,8 @@ class Diretoria(Usuario):
             print(f"Erro ao modificar evento no calendário: {e}")
 
     def apagar_evento_calendario(self) -> None:
+        """Método para apagar um evento existente no calendário
+        """
         try:
             nome = input("> Insira o nome do evento que quer apagar: ")
             horario = input("> Insira o horário do evento (hh:mm) que quer apagar: ")
@@ -319,7 +342,6 @@ class Diretoria(Usuario):
         except Exception as e:
             print(f"Erro ao apagar evento no calendário: {e}")
     #def editar informações alunos e professores
-    #def enviar notificação de notas
     #def consultar turmas
     #def calcular aprovados e reprovados
     

@@ -182,7 +182,7 @@ class MenuDiretoria(Menu):
     def __init__(self, diretoria : Type[Diretoria]) -> None:
         self.funcionario = diretoria
         super().__init__(f"Olá, {diretoria.cargo}!")
-        self._options = ['Alunos', 'Professores', 'Acessar Calendário']
+        self._options = ['Alunos', 'Professores', 'Acessar turmas', 'Acessar Calendário']
 
     def next(self, option : int) -> None:
         if option == 1:
@@ -231,6 +231,8 @@ class MenuDiretoria(Menu):
                 print("Opção inválida!")
             return self
         elif option == 3:
+            pass
+        elif option == 4:
             print("> 1. Exibir calendário do mês")
             print("> 2. Exibir calendário do ano")
             print("> 3. Inserir novo evento")

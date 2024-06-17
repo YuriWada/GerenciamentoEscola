@@ -4,18 +4,41 @@ from typing import List
 
 class CadastroTurma(ABC):
     def __init__(self) -> None:
+        """Interface para Cadastro de turmas
+
+        Args:
+            db (any): instância da classe de Banco de Dados
+        """
         self.db = DataBase()
 
     @abstractmethod
     def valida_dados(self) -> bool:
+        """Valida os dados dos construtores
+
+        Returns:
+            bool: retorna True se os dados são válidos. False se são inválidos.
+        """
         pass
 
     @abstractmethod
     def save(self) -> bool:
+        """Salva os dados no banco de dados.
+
+        Returns:
+            bool: retorna True se os dados foram salvos. False se não foram salvos.
+        """
         pass
 
 class CadastroAlunoTurma(CadastroTurma):
     def __init__(self, aluno : str, matricula : str, turmas : List[str], nota : float = None) -> None:
+        """Construtor da classe CadastroAlunoTurma. Classe para cadastrar os alunos em uma turma.
+
+        Args:
+            aluno (str): nome do aluno
+            matricula (str): número de matrícula do aluno
+            turmas (List[str]): turmas em que o aluno será matriculado
+            nota (float, optional): nota do aluno. Defaults to None.
+        """
         super().__init__()
         self.aluno = aluno
         self.matricula = matricula
@@ -23,6 +46,11 @@ class CadastroAlunoTurma(CadastroTurma):
         self.turmas = turmas
 
     def valida_dados(self) -> bool:
+        """Método para validar os dados do aluno.
+
+        Returns:
+            bool: retorna True se os dados são válidos. False se são inválidos.
+        """
         for turma in self.turmas:
             infos = self.db.query_data("Turmas", {"nome": turma})
             if not infos:
@@ -34,6 +62,11 @@ class CadastroAlunoTurma(CadastroTurma):
         return True
 
     def save(self) -> bool:
+        """Método para salvar os dados do aluno no banco de dados.
+
+        Returns:
+            bool: retorna True se os dados foram salvos. False se não foram salvos.
+        """
         try:
             if not self.valida_dados():
                 return False
@@ -62,11 +95,23 @@ class CadastroAlunoTurma(CadastroTurma):
 
 class CadastroProfessorTurma(CadastroTurma):
     def __init__(self, professor : str, turmas : List[str] = None) -> None:
+        """Construtor da classe CadastroProfessorTurma. Classe utilizada para
+    cadastrar um professor em uma ou várias turmas.
+
+        Args:
+            professor (str): nome do professor
+            turmas (List[str], optional): lista de turmas em que será cadastrado. Defaults to None.
+        """
         super().__init__()
         self.professor = professor
         self.turmas = turmas
 
     def valida_dados(self) -> bool:
+        """Método utilizado para validar os dados.
+
+        Returns:
+            bool: retorna True se os dados são válidos. False se são inválidos.
+        """
         for turma in self.turmas:
             infos = self.db.query_data("Turmas", {"nome": turma})
             if not infos:
@@ -77,6 +122,11 @@ class CadastroProfessorTurma(CadastroTurma):
         return True
 
     def save(self) -> bool:
+        """Método para salvar os dados do professor no banco de dados.
+
+        Returns:
+            bool: retorna True se os dados foram salvos. False se não foram salvos.
+        """
         try:
             if not self.valida_dados():
                 return False
