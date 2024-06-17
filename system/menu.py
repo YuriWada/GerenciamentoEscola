@@ -177,6 +177,17 @@ class MenuProfessor(Menu):
         """
         if option == 1:
             return self
+        if option == 2:
+            print("> 1. Exibir calendário do mês")
+            print("> 2. Exibir calendário do ano")
+            sub_option = int(input("> Escolha uma opção: "))
+            if sub_option == 1:
+                self.calendario.exibir_calendario()
+            elif sub_option == 2:
+                self.calendario.exibir_calendario_anual()
+            else:
+                print("Opção inválida!")
+            return self
 
 class MenuDiretoria(Menu):
     def __init__(self, diretoria : Type[Diretoria]) -> None:
@@ -201,8 +212,9 @@ class MenuDiretoria(Menu):
                     print(f"Curso: {info.get('curso')}")
                     print(f"Matrícula: {info.get('matricula')}")
                     print("Turmas:")
-                    for turma in info.get('turmas_matriculadas'):
-                        print(f". {turma}")
+                    if info.get('turmas_matriculadas'):
+                        for turma in info.get('turmas_matriculadas'):
+                            print(f". {turma}")
             elif sub_option == 2:
                 self.funcionario.cadastrar_aluno()
             else:
@@ -213,18 +225,19 @@ class MenuDiretoria(Menu):
             print("> 2. Cadastrar novo professor")
             sub_option = int(input("> Escolha uma opção:"))
             if sub_option == 1:
-                print("================================")
+                print("======================================")
                 print("xxx Exibindo lista de professores xxx")
                 infos = self._db.query_data("Professores")
                 for e, info in enumerate(infos):
-                    print("================================")
+                    print("======================================")
                     print(f"{e+1}. {info.get('nome')}")
                     print(f"Idade: {info.get('idade')}")
                     print(f"E-mail: {info.get('email')}")
                     print(f"Disciplina: {info.get('disciplina')}")
                     print("Turmas:")
-                    for turma in info.get('turmas_matriculadas'):
-                        print(f". {turma}")
+                    if info.get('turmas_matriculadas'):
+                        for turma in info.get('turmas_matriculadas'):
+                            print(f". {turma}")
             elif sub_option == 2:
                 self.funcionario.cadastrar_professor()
             else:

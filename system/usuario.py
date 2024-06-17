@@ -226,11 +226,17 @@ class Diretoria(Usuario):
                 print(f"Erro ao processar a entrada: {e}")
 
         print("Turmas adicionadas:", turmas)
+        professores_antigos = []
+        for turma in turmas:
+            infos = self.db.query_data("Turmas", {'nome': turma})
+            professores_antigos.append(infos[0].get('professor'))
 
         cadastroturma = CadastroProfessorTurma(nome, turmas)
         if cadastroturma.save():
             cadastroprofessor = CadastroProfessor(nome, idade, endereco, telefone, email, login, senha, disciplina, turmas)
             cadastroprofessor.save()
+            for professor in professores_antigos:
+                self.db.update_data("Professores", {'nome': professor}, {'$set': {'turmas_matriculadas': None}})
         else:
             print("Não foi possível cadastrar o professor!")
 
@@ -341,6 +347,7 @@ class Diretoria(Usuario):
             print("Evento apagado com sucesso!")
         except Exception as e:
             print(f"Erro ao apagar evento no calendário: {e}")
+            
     #def editar informações alunos e professores
     #def consultar turmas
     #def calcular aprovados e reprovados
