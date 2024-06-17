@@ -242,6 +242,15 @@ class MenuDiretoria(Menu):
                     self.calendario.exibir_calendario()
                 elif sub_option == 2:
                     self.calendario.exibir_calendario_anual()
+                elif sub_option == 3:
+                    print("> Criar novo evento")
+                    self.funcionario.inserir_evento_calendario()
+                elif sub_option == 4:
+                    print("> Modificar evento")
+                    self.funcionario.modificar_evento_calendario()
+                elif sub_option == 5:
+                    print("Apagar evento")
+                    self.funcionario.apagar_evento_calendario()
                 else:
                     print("Opção inválida! Tente novamente")
             except ValueError:

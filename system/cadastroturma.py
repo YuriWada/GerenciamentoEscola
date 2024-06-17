@@ -60,7 +60,6 @@ class CadastroAlunoTurma(CadastroTurma):
             print(f"Erro ao salvar dados do aluno: {e}")
             return False
 
-
 class CadastroProfessorTurma(CadastroTurma):
     def __init__(self, professor : str, turmas : List[str] = None) -> None:
         super().__init__()

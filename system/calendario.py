@@ -16,7 +16,7 @@ class Calendario:
         """Insere um evento no calendário do banco de dados.
 
         Args:
-            dict (dict): recebe um dicionário com os horarios no formato hh:mm dd/mm/aaaa
+            dict (dict): recebe um dicionário com nome, horarios {hh:mm} e data {dd/mm/aaaa}
 
         Returns:
             bool: true - evento inserido com sucesso, false - evento não inserido
@@ -47,13 +47,14 @@ class Calendario:
             infos = self.db.query_data(self.nome)
         return infos
     
-    def update_event(self, dict : dict) -> None:
-        """Atualiza um evento no calendário escolar
+    def update_event(self, search_criteria : dict, dict : dict) -> None:
+        """Atualiza um evento no calendário
 
         Args:
-            dict (dict): critérios de busca para atualização do evento
+            search_criteria (dict): critérios de busca para encontrar o evento que se quer alterar
+            dict (dict): campos atualizados do evento
         """
-        self.db.update_data(self.nome, {'$set': dict})
+        self.db.update_data(self.nome, search_criteria, {'$set': dict})
 
     def delete_event(self, dict : dict) -> None:
         """Deleta um evento do calendário escolar
@@ -62,6 +63,7 @@ class Calendario:
             dict (dict): dicionário com os critérios de busca para exclusão do evento
         """
         self.db.delete_data(self.nome, dict)
+        print(f"> Evento {dict} apagado com sucesso!")
 
     def exibir_calendario(self) -> None:
         """Exibe o calendário do mês atual com eventos registrados
@@ -76,7 +78,7 @@ class Calendario:
         eventos_do_mes = [evento for evento in eventos if datetime.strptime(evento['data'], '%d/%m/%Y').month == mes and datetime.strptime(evento['data'], '%d/%m/%Y').year == ano]
         if eventos_do_mes:
             print("\nEventos Registrados:")
-            for evento in eventos_do_mes:
+            for evento in sorted(eventos_do_mes, key=lambda e: datetime.strptime(e['data'], '%d/%m/%Y')):
                 print(f"{evento['data']}: {evento['nome']}")
         else:
             print("\nNenhum evento registrado para este mês.")
@@ -94,7 +96,7 @@ class Calendario:
             eventos_do_mes = [evento for evento in eventos if datetime.strptime(evento['data'], '%d/%m/%Y').month == mes and datetime.strptime(evento['data'], '%d/%m/%Y').year == ano]
             if eventos_do_mes:
                 print("\nEventos Registrados:")
-                for evento in eventos_do_mes:
+                for evento in sorted(eventos_do_mes, key=lambda e: datetime.strptime(e['data'], '%d/%m/%Y')):
                     print(f"{evento['data']}: {evento['nome']}")
             else:
                 print("Nenhum evento registrado para este mês.")
