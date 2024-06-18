@@ -2,7 +2,7 @@ from usuario import Usuario
 from typing import List
 
 class Aluno(Usuario):
-    def __init__(self, nome : str, idade : int, endereco : str, telefone: str, email : str, login : str, curso : str, matricula : str, turmas_matriculadas : List[str] = None) -> None:
+    def __init__(self, nome : str, idade : int, endereco : str, telefone: str, email : str, login : str, curso : str, matricula : str, disciplinas_matriculadas : List[str] = None) -> None:
         """Construtor da classe Aluno
 
         Args:
@@ -14,55 +14,58 @@ class Aluno(Usuario):
             login (str): login utilizado para logar no sistema
             curso (str): curso em que o aluno está matriculado
             matricula (str): matrícula do aluno
-            turmas_matriculadas (List[str], optional): lista de turmas nas quais o aluno está matriculado. Defaults to None.
+            disciplinas_matriculadas (List[str], optional): lista de disciplinas nas quais o aluno está matriculado. Defaults to None.
         """
         super().__init__(nome, idade, endereco, telefone, email, login)
         self.curso = curso
         self.matricula = matricula
-        self.turmas_matriculadas = turmas_matriculadas
+        self.disciplinas_matriculadas = disciplinas_matriculadas
         
     def buscar_notas(self) -> list:
-        """Método para buscar as notas de cada turma do aluno
+        """Método para buscar as notas de cada disciplina do aluno
 
         Returns:
-            list: lista de dicionários com as notas do aluno. {"Turma", "nota"}
+            list: lista de dicionários com as notas do aluno. {"disciplina", "nota"}
         """
-        if not self.turmas_matriculadas:
-            print(f"O aluno {self.nome} não está matriculado em nenhuma turma!")
+        if not self.disciplinas_matriculadas:
+            print(f"O aluno {self.nome} não está matriculado em nenhuma disciplina!")
             return []
         notas = []
-        for turma in self.turmas_matriculadas:
-            infos = self.db.query_data(turma, {"nome": self.nome})
+        for disciplina in self.disciplinas_matriculadas:
+            infos = self.db.query_data(disciplina, {"nome": self.nome})
             if infos:
-                nota = {"turma": turma, "nota": infos[0].get('nota', 'Nota não encontrada')}
+                valor_nota = infos[0].get('nota', 'Nota não encontrada')
+                if valor_nota == None:
+                    valor_nota = "Nenhuma nota no sistema"
+                nota = {"disciplina": disciplina, "nota": valor_nota}
                 notas.append(nota)
             else:
-                print(f"Nenhuma informação encontrada para o aluno {self.nome} na turma {turma}.")
+                print(f"Nenhuma informação encontrada para o aluno {self.nome} na disciplina {disciplina}.")
         return notas
     
     def buscar_horarios(self) -> list:
-        """Método para buscar os horários de cada turma do aluno
+        """Método para buscar os horários de cada disciplina do aluno
 
         Returns:
-            list: lista com os horários das turmas
+            list: lista com os horários das disciplinas
         """
-        if not self.turmas_matriculadas:
-            print(f"O aluno {self.nome} não está matriculado em nenhuma turma!")
+        if not self.disciplinas_matriculadas:
+            print(f"O aluno {self.nome} não está matriculado em nenhuma disciplina!")
             return []
         horarios = []
-        for turma in self.turmas_matriculadas:
-            infos = self.db.query_data("Turmas", {"nome": self.nome})
+        for disciplina in self.disciplinas_matriculadas:
+            infos = self.db.query_data("Disciplinas", {"nome": disciplina})
             if infos:
-                horario = {"turma": infos[0].get('nome'), "horarios": infos[0].get('horarios', 'Horarios não encontrados')}
+                horario = {"disciplina": infos[0].get('nome'), "horarios": infos[0].get('horarios', 'Horarios não encontrados')}
                 horarios.append(horario)
             else:
-                print(f"Nenhuma informação encontrada para o aluno {self.nome} na turma {turma}.")
+                print(f"Nenhuma informação encontrada para o aluno {self.nome} na disciplina {disciplina}.")
         return horarios
 
-    def busca_turmas_matriculadas(self) -> list:
-        """Método para buscar as turmas matriculadas do aluno
+    def busca_disciplinas_matriculadas(self) -> list:
+        """Método para buscar as disciplinas matriculadas do aluno
 
         Returns:
-            list: turmas em que o aluno está matriculado
+            list: disciplinas em que o aluno está matriculado
         """
-        return self.turmas_matriculadas
+        return self.disciplinas_matriculadas

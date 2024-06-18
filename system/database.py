@@ -111,15 +111,19 @@ class DataBase:
         except Exception as e:
             print(f"Erro ao atualizar documento: {e}")
 
-    def empty_collection(self, collection_name : str) -> None:
-        """Cria uma coleção vazia no banco de dados
+    def empty_collection(self, collection_name: str) -> None:
+        """Cria uma coleção vazia no banco de dados, se ainda não existir
 
         Args:
             collection_name (str): nome da coleção nova
         """
         try:
-            collection = self.__school_system_db[collection_name]
-            collection.create_index("fake_index")
+            if collection_name not in self.__school_system_db.list_collection_names():
+                collection = self.__school_system_db[collection_name]
+                collection.create_index("fake_index")
+                print(f"Coleção '{collection_name}' criada com sucesso.")
+            else:
+                print(f"Coleção '{collection_name}' já existe.")
         except errors.PyMongoError as e:
             print(f"Erro ao criar nova coleção no Banco de Dados: {e}")
         except Exception as e:

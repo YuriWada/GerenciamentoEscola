@@ -1,6 +1,6 @@
 import os
 from cadastro import *
-from menu import *
+from menuinicial import MenuInicial
 
 class SchoolSystem:
     def run(self) -> None:

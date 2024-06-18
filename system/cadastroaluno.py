@@ -2,7 +2,7 @@ from cadastro import Cadastro
 from typing import List
 
 class CadastroAluno(Cadastro):
-    def __init__(self, nome : str, idade : int, endereco : str, telefone : str, email : str, login : str, senha : str, curso : str, matricula : str, turmas_matriculadas : List[str] = None) -> None:
+    def __init__(self, nome : str, idade : int, endereco : str, telefone : str, email : str, login : str, senha : str, curso : str, matricula : str, disciplinas_matriculadas : List[str] = None) -> None:
         """Construtor da classe CadastroAluno
 
         Args:
@@ -15,13 +15,13 @@ class CadastroAluno(Cadastro):
             senha (str): senha utilizada para logar no sistema
             curso (str): curso matriculado
             matricula (str): número da matrícula
-            turmas_matriculadas (List[str]): lista de turmas matriculadas
+            disciplinas_matriculadas (List[str]): lista de disciplinas matriculadas
         """
         super().__init__(nome, idade, endereco, telefone, email, login)
         self.curso = curso
         self.matricula = matricula
         self.__senha = senha
-        self.turmas_matriculadas = turmas_matriculadas
+        self.disciplinas_matriculadas = disciplinas_matriculadas
 
     def save(self) -> None:
         """Salva os dados no banco de dados da coleção Alunos
@@ -37,7 +37,7 @@ class CadastroAluno(Cadastro):
                 "senha": self.__senha,
                 "curso": self.curso,
                 "matricula": self.matricula,
-                "turmas_matriculadas" : self.turmas_matriculadas
+                "disciplinas_matriculadas" : self.disciplinas_matriculadas
             }
             self.db.insert_data("Alunos", data)
             print("Dados cadastrados com sucesso!")

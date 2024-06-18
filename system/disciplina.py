@@ -3,18 +3,18 @@ from pymongo import errors
 from database import DataBase
 from typing import List
 
-class Turma(ABC):
+class Disciplina(ABC):
     def __init__(self, nome : str) -> None:
-        """Construtor da classe Turma
+        """Construtor da classe Disciplina
 
         Args:
-            nome (str): nome da turma[digito]
+            nome (str): nome da Disciplina[digito]
         """
         self.nome = nome
         self.db = DataBase()
 
     def media_notas(self) -> float:
-        """Método para obter a média aritmética de notas da turma
+        """Método para obter a média aritmética de notas da Disciplina
 
         Raises:
             ValueError: se nenhuma nota foi registrada no sistema
@@ -35,7 +35,7 @@ class Turma(ABC):
             print(f"Erro ao calcular a média das notas: {e}")
 
     def listagem_alunos(self) -> list:
-        """Método para lista os alunos matriculados na turma
+        """Método para lista os alunos matriculados na Disciplina
 
         Raises:
             ValueError: se nenhum aluno está matriculado
@@ -47,26 +47,26 @@ class Turma(ABC):
             infos = self.db.query_data(self.nome)
             nomes = [info['nome'] for info in infos if 'nome' in info]
             if not nomes:
-                raise ValueError("Não há alunos matriculados na turma!")
+                raise ValueError("Não há alunos matriculados na Disciplina!")
             return nomes
         except errors.PyMongoError as e:
             print(f"Erro ao consultar nomes no MongoDB: {e}")
         except Exception as e:
             print(f"Erro ao encontrar nomes: {e}")
 
-    def horarios_turma(self) -> list:
-        """Método para verificar os horários da turma
+    def horarios_disciplina(self) -> list:
+        """Método para verificar os horários da Disciplina
 
         Raises:
-            ValueError: Se nenhuma informação sobre a turma foi encontrada
+            ValueError: Se nenhuma informação sobre a Disciplina foi encontrada
 
         Returns:
-            list: lista contendo os horários associados à turma
+            list: lista contendo os horários associados à Disciplina
         """
         try:
-            infos = self.db.query_data("Turmas", {"nome": self.nome})
+            infos = self.db.query_data("Disciplinas", {"nome": self.nome})
             if not infos:
-                raise ValueError("Nenhuma informação sobre a turma registrada no sistema!")
+                raise ValueError("Nenhuma informação sobre a Disciplina registrada no sistema!")
             horarios = [info['horarios'] for info in infos if 'horarios' in info]
             return horarios
         except Exception as e:

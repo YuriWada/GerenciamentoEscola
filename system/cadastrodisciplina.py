@@ -1,10 +1,9 @@
 from database import DataBase
 from abc import ABC, abstractmethod
-from typing import List
 
-class CadastroTurma(ABC):
+class CadastroDisciplina(ABC):
     def __init__(self) -> None:
-        """Interface para Cadastro de turmas
+        """Interface para Cadastro de Disciplinas
 
         Args:
             db (any): instância da classe de Banco de Dados
