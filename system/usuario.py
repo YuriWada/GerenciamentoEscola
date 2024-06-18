@@ -1,4 +1,5 @@
 import random
+from itertools import islice
 from datetime import datetime
 from abc import ABC, abstractmethod
 from database import DataBase
@@ -117,11 +118,31 @@ class Diretoria(Usuario):
         self.cargo = cargo
         self.calendario = Calendario()
 
+    def inserir_em_turmas(infos, max_attempts):
+        turmas = []
+
+        for i in range(max_attempts):
+            try:
+                turma = input("Insira o nome da turma (ou 0 para cancelar): ").strip()
+                if turma == "0":
+                    break
+
+                if any(t['nome'] == turma for t in infos):
+                    turmas.append(turma)
+                else:
+                    print("Turma não encontrada. Tente novamente.")
+            except Exception as e:
+                print(f"Erro ao processar a entrada: {e}")
+
+        return turmas
+
     def cadastrar_aluno(self) -> None:
         """Método utilizado para cadastrar um novo aluno no sistema
         """
         print("> Cadastro de novo aluno")
+        print("> Digite 0 para cancelar a qualquer momento")
         print("Informações pessoais")
+
         nome = input("> Insira o nome do aluno: ")
         idade = int(input("> Insira a idade do aluno: "))
         endereco = input("> Insira o endereço do aluno: ")
@@ -152,26 +173,7 @@ class Diretoria(Usuario):
         for e, info in enumerate(infos):
             print(f"{e+1}. {info.get('nome')}")
 
-        turmas = []
-        i = 0
-        max_attempts = 5
-
-        while i < max_attempts:
-            try:
-                turma = input("Insira o nome da turma (ou 0 para cancelar): ").strip()
-                if turma == "0":
-                    break
-
-                # Verificar se a turma existe em infos
-                turma_existe = any(t['nome'] == turma for t in infos)
-                
-                if turma_existe:
-                    turmas.append(turma)
-                    i += 1
-                else:
-                    print("Turma não encontrada. Tente novamente.")
-            except Exception as e:
-                print(f"Erro ao processar a entrada: {e}")
+        turmas = self.inserir_em_turmas(infos, 5)
 
         print("Turmas adicionadas:", turmas)
         
@@ -204,26 +206,7 @@ class Diretoria(Usuario):
             print(f"{e+1}. {info.get('nome')}")
         print(">Insira o nome, um de cada vez, da turma em que deseja matricular o docente (0 para cancelar):")
 
-        turmas = []
-        i = 0
-        max_attempts = 5
-
-        while i < max_attempts:
-            try:
-                turma = input("Insira o nome da turma (ou 0 para cancelar): ").strip()
-                if turma == "0":
-                    break
-
-                # Verificar se a turma existe em infos
-                turma_existe = any(t['nome'] == turma for t in infos)
-                
-                if turma_existe:
-                    turmas.append(turma)
-                    i += 1
-                else:
-                    print("Turma não encontrada. Tente novamente.")
-            except Exception as e:
-                print(f"Erro ao processar a entrada: {e}")
+        turmas = self.inserir_em_turmas(infos, 5)
 
         print("Turmas adicionadas:", turmas)
         professores_antigos = []
@@ -271,15 +254,23 @@ class Diretoria(Usuario):
         """
         try:
             nome = input("> Insira o nome do evento que quer alterar: ")
-            horario = input("> Insira o horário do evento (hh:mm) que quer alterar: ")
-            data = input("> Insira a data do evento (dd/mm/aaaa) que quer alterar: ")
 
+            eventos_encontrados = self.calendario.query_event({'nome': nome})
+            if not eventos_encontrados:
+                print("Evento não encontrado!")
+                return
+            else:
+                for evento in eventos_encontrados:
+                    print(f"{evento}")
+
+            horario = input("> Insira o horário do evento (hh:mm) que quer alterar: ")
             try:
                 datetime.strptime(horario, '%H:%M')
             except ValueError:
                 print("Formato de horário inválido. Use hh:mm.")
                 return
 
+            data = input("> Insira a data do evento (dd/mm/aaaa) que quer alterar: ")
             try:
                 datetime.strptime(data, '%d/%m/%Y')
             except ValueError:
@@ -290,19 +281,18 @@ class Diretoria(Usuario):
 
             eventos_encontrados = self.calendario.query_event(filtro_dict)
             if not eventos_encontrados:
-                print("Evento não encontrado!")
+                print("Evento com os critérios especificados não encontrado!")
                 return
 
             nome_novo = input("> Insira o novo nome para o evento: ")
             horario_novo = input("> Insira o novo horário do evento (hh:mm): ")
-            data_novo = input("> Insira a nova data do evento (dd/mm/aaaa): ")
-
             try:
                 datetime.strptime(horario_novo, '%H:%M')
             except ValueError:
                 print("Formato de horário novo inválido. Use hh:mm.")
                 return
 
+            data_novo = input("> Insira a nova data do evento (dd/mm/aaaa): ")
             try:
                 datetime.strptime(data_novo, '%d/%m/%Y')
             except ValueError:
@@ -321,15 +311,23 @@ class Diretoria(Usuario):
         """
         try:
             nome = input("> Insira o nome do evento que quer apagar: ")
-            horario = input("> Insira o horário do evento (hh:mm) que quer apagar: ")
-            data = input("> Insira a data do evento (dd/mm/aaaa) que quer apagar: ")
 
+            eventos_encontrados = self.calendario.query_event({'nome': nome})
+            if not eventos_encontrados:
+                print("Evento não encontrado!")
+                return
+            else:
+                for evento in eventos_encontrados:
+                    print(f"{evento}")
+
+            horario = input("> Insira o horário do evento (hh:mm) que quer apagar: ")
             try:
                 datetime.strptime(horario, '%H:%M')
             except ValueError:
                 print("Formato de horário inválido. Use hh:mm.")
                 return
 
+            data = input("> Insira a data do evento (dd/mm/aaaa) que quer apagar: ")
             try:
                 datetime.strptime(data, '%d/%m/%Y')
             except ValueError:
@@ -340,15 +338,61 @@ class Diretoria(Usuario):
 
             eventos_encontrados = self.calendario.query_event(filtro_dict)
             if not eventos_encontrados:
-                print("Evento não encontrado!")
+                print("Evento com os critérios especificados não encontrado!")
                 return
 
             self.calendario.delete_event(filtro_dict)
             print("Evento apagado com sucesso!")
         except Exception as e:
             print(f"Erro ao apagar evento no calendário: {e}")
+    
+    def editar_infos(self, tipo: str) -> None:
+        try:
+            infos = self.db.query_data(f"{tipo}")
+            if not infos:
+                print("Nenhuma informação encontrada!")
+                return
             
-    #def editar informações alunos e professores
+            for e, info in enumerate(infos, start=1):
+                index = list(info.items())
+                print("=" * 60)
+                print(f"{e}. {index[1][1]}")
+                for key, value in islice(info.items(), 2, None):
+                    print(f"{key.capitalize()}: {value}")
+            
+            print("> Escolha um número para editar (0 para cancelar): ")
+            option = int(input())
+            if option == 0:
+                return
+            if option < 1 or option > len(infos):
+                print("Opção inválida!")
+                return
+
+            print("> Escolha o campo que deseja editar (0 para cancelar): ")
+            selected_info = infos[option-1]
+            for e, (key, value) in enumerate(islice(selected_info.items(), 1, None), start=1):
+                print(f"{e}. {key.capitalize()}: {value}")
+
+            field_option = int(input())
+            if field_option == 0:
+                return
+            if field_option < 1 or field_option >= len(selected_info):
+                print("Opção inválida!")
+                return
+
+            keys = list(selected_info.keys())[1:]  # Ignora o primeiro campo
+            key_to_edit = keys[field_option-1]
+
+            change = input(f"> Insira o novo valor para {key_to_edit.capitalize()}: ")
+
+            self.db.update_data(f"{tipo}", selected_info, {'$set': {key_to_edit: change}})
+            print(f"Campo '{key_to_edit.capitalize()}' atualizado com sucesso!")
+            
+        except ValueError:
+            print("Entrada inválida! Por favor, insira um número.")
+        except Exception as e:
+            print(f"Erro ao editar informações: {e}")
+        
     #def consultar turmas
     #def calcular aprovados e reprovados
     
