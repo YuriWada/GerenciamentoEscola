@@ -4,6 +4,9 @@ from usuario import *
 from database import DataBase
 from typing import Type
 from calendario import Calendario
+from diretoria import Diretoria
+from aluno import Aluno
+from professor import Professor
 
 class Menu(ABC):
     def __init__(self, title : str) -> None:
