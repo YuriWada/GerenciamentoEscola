@@ -34,6 +34,8 @@ class MenuDiretoria(Menu):
                 self.funcionario.cadastrar_aluno()
             elif sub_option == 3:
                 self.funcionario.editar_infos("Alunos")
+            elif sub_option == 0:
+                return self
             else:
                 print("Opção inválida!")
             return self
@@ -59,6 +61,8 @@ class MenuDiretoria(Menu):
                 self.funcionario.cadastrar_professor()
             elif sub_option == 3:
                 self.funcionario.editar_infos("Professores")
+            elif sub_option == 0:
+                return self
             else:
                 print("Opção inválida!")
             return self
@@ -78,8 +82,32 @@ class MenuDiretoria(Menu):
                     print(f"Cargo: {info.get('cargo')}")
             elif sub_option == 2:
                 self.funcionario.editar_infos("Diretoria")
+            elif sub_option == 0:
+                return self
+            else:
+                print("Opção inválida!")
             return self
         elif option == 4:
+            print("> 1. Lista de disciplinas")
+            print("> 2. Cadastrar aluno em disciplina")
+            print("> 3. Cadastrar professor em disciplina")
+            sub_option = int(input("> Escolha uma opção: "))
+            if sub_option == 1:
+                infos_disciplinas = self._db.query_data("Disciplinas")
+                for e, info_disciplina in enumerate(sorted(infos_disciplinas, key=lambda x:x['nome']), start=1):
+                    print(f"{e}. {info_disciplina.get('nome')}")
+                return self
+            elif sub_option == 2:
+                nome_aluno = input("> Insira o nome do aluno: ")
+                nome_disciplina = input("> Insira o nome da disciplina: ")
+                self.funcionario.cadastrar_aluno_em_disciplina(nome_disciplina, nome_aluno)
+            elif sub_option == 3:
+                return self
+            elif sub_option == 0:
+                return self
+            else:
+                print("Opção inválida, tente novamente!")
+                return self
             return self
         elif option == 5:
             print("> 1. Exibir calendário do mês")
@@ -102,8 +130,13 @@ class MenuDiretoria(Menu):
                 elif sub_option == 5:
                     print("Apagar evento")
                     self.calendario.apagar_evento_calendario()
+                elif sub_option == 0:
+                    return self
                 else:
                     print("Opção inválida! Tente novamente")
             except ValueError:
                 print("Opção inválida! Por favor, insira um número.")
+            return self
+        else:
+            print("Opção inválida! Tente novamente")
             return self

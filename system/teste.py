@@ -185,9 +185,9 @@ disciplina1 = CriaDisciplina(
     nome="Cálculo I",
     horarios=["seg 08:00", "qua 10:00", "sex 14:00"],
 )
-disciplina1.save()
+disciplina1.save()"""
 
-disciplina2 = CriaDisciplina(
+"""disciplina2 = CriaDisciplina(
     nome="Física I",
     horarios=["ter 09:00", "qui 11:00", "sex 16:00"],
 )

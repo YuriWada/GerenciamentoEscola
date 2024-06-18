@@ -44,7 +44,7 @@ class DataBase:
         except Exception as e:
             print(f"Erro ao inserir dados: {e}")
 
-    def query_data(self, collection_name : str, query : dict = None) -> dict:
+    def query_data(self, collection_name : str, query : dict = None) -> list:
         """Faz pesquisa de dados no banco de dados
 
         Args:
@@ -52,7 +52,7 @@ class DataBase:
             query (dict, optional): dados pesquisados. Defaults to None.
 
         Returns:
-            dict: uma lista com os dados encontrados
+            list: uma lista com os dados encontrados
         """
         try:
             collection = self.__school_system_db[collection_name]

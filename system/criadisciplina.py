@@ -3,7 +3,7 @@ from typing import List
 
 # Cria da Disciplina
 class CriaDisciplina:
-    def __init__(self, nome : str, horarios : List[str], professor : str = None, alunos : List[dict] = None) -> None:
+    def __init__(self, nome : str, horarios : List[str], professor : str = None, alunos : List[dict] = []) -> None:
         """Construtor da classe CriaDisciplina
 
         Args:

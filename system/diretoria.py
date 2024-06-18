@@ -106,7 +106,7 @@ class Diretoria(Usuario):
                 break
         print(f"Número de matrícula gerado: {matricula}")
 
-        print("> Selecione as disciplinas em que deseja matricular o aluno (0 para cancelar):")
+        print("> Selecione as disciplinas em que deseja matricular o aluno (0 para não matricular em disciplinas):")
         infos = self.db.query_data("Disciplinas")
 
         if infos:
@@ -119,7 +119,7 @@ class Diretoria(Usuario):
         else:
             print("Disciplinas adicionadas:", disciplinas)
 
-        cadastroaluno = CadastroAluno(nome, idade, endereco, telefone, email, login, senha, curso, matricula, disciplinas)
+        cadastroaluno = CadastroAluno(nome, idade, endereco, telefone, email, login, senha, curso, matricula)
         cadastroaluno.save()
         print("Aluno cadastrado com sucesso!")
 
@@ -127,6 +127,18 @@ class Diretoria(Usuario):
             cadastrodisciplina = CadastroAlunoDisciplina(nome, matricula, disciplinas)
             cadastrodisciplina.save()
     
+    def cadastrar_aluno_em_disciplina(self, disciplina : str, aluno : str) -> None:
+        valida_disciplina = self.db.query_data("Disciplinas", {"nome": disciplina})
+        valida_aluno = self.db.query_data("Alunos", {"nome": aluno})
+        if not valida_disciplina or not valida_aluno:
+            print("Disciplina ou aluno não existente! Tente de novo.")
+            return
+        try:
+            cadastroaluno = CadastroAlunoDisciplina(aluno, valida_aluno[0].get('matricula'), [disciplina])
+            cadastroaluno.save()
+        except Exception as e:
+            print(f"Não foi possível cadastrar o aluno na disciplina! {e}")
+
     def cadastrar_professor(self) -> None:
         """Método para cadastrar um novo professor no sistema
         """
@@ -203,6 +215,18 @@ class Diretoria(Usuario):
         
         print("Professor cadastrado com sucesso!")
     
+    def cadastrar_professor_em_disciplina(self) -> None:
+        pass
+
+    def exibir_informações_disciplina(self) -> None:
+        pass
+
+    def calcula_aprovados(self) -> None:
+        pass
+
+    def calcula_reprovados(self) -> None:
+        pass
+
     def editar_infos(self, tipo: str) -> None:
         try:
             infos = self.db.query_data(f"{tipo}")
@@ -260,9 +284,13 @@ class Diretoria(Usuario):
                         return
                     else:
                         change = input(f"> Insira o valor que deseja remover de {key_to_edit.capitalize()} (0 para cancelar): ")
-                        self.db.update_data(f"{tipo}", selected_info, {'$pull': {key_to_edit: change}})
                         if change == '0':
                             return
+                        self.db.update_data(f"{tipo}", selected_info, {'$pull': {key_to_edit: change}})
+                        if tipo == 'Professores' and key_to_edit == 'disciplinas_matriculadas':
+                            info_disc = self.db.query_data("Disciplinas", {"nome": change})
+                            if info_disc[0].get('professor') is not None:
+                                self.db.update_data("Disciplinas", {"nome": change}, {'$set': {'professor': None}})                
                 else:
                     print("Opção inválida!")
                     return
@@ -276,9 +304,3 @@ class Diretoria(Usuario):
             print("Entrada inválida! Por favor, insira um número.")
         except Exception as e:
             print(f"Erro ao editar informações: {e}")
-        
-    #def consultar disciplinas
-    #def calcular aprovados e reprovados
-    
-    def deletar_usuario(colecao, criterio) -> None:
-        pass

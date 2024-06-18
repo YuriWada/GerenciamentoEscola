@@ -43,21 +43,15 @@ class CadastroAlunoDisciplina(CadastroDisciplina):
         try:
             if not self.valida_dados():
                 return False
-
             aluno = {"nome": self.aluno, "matricula": self.matricula}
             aluno_com_nota = {"nome": self.aluno, "matricula": self.matricula, "nota": None}
-
             for disciplina in self.disciplinas:
                 try:
-                    infos = self.db.query_data("Disciplinas", {"nome": disciplina})
-                    if infos[0].get('alunos'):
-                        self.db.update_data("Disciplinas", {"nome": disciplina}, {"$push": {"alunos": aluno}})
-                    else:
-                        self.db.update_data("Disciplinas", {"nome": disciplina}, {"$set": {"alunos": aluno}})
+                    self.db.update_data("Disciplinas", {"nome": disciplina}, {"$push": {"alunos": aluno}})
+                    self.db.update_data("Alunos", {"nome": self.aluno}, {"$push": {"disciplinas_matriculadas": disciplina}})
                 except Exception as e:
                     print(f"Erro ao atualizar a disciplina {disciplina} no banco de dados: {e}")
                     return False
-
                 try:
                     self.db.insert_data(disciplina, aluno_com_nota)
                 except Exception as e:
