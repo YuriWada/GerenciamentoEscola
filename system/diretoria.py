@@ -4,7 +4,10 @@ from itertools import islice
 from datetime import datetime
 from calendario import Calendario
 from cadastro import *
-from cadastroturma import *
+from cadastroaluno import CadastroAluno
+from cadastroalunoturma import CadastroAlunoTurma
+from cadastroprof import CadastroProfessor
+from cadastroprofturma import CadastroProfessorTurma
 
 class Diretoria(Usuario):
     def __init__(self, nome: str, idade: int, endereco: str, telefone: str, email: str, login: str, cargo: str) -> None:
