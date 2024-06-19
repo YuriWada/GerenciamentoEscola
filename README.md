@@ -26,6 +26,15 @@ from pymongo import MongoClient, errors
 # These lines are already in use in this project
 ```
 
+## Run
+
+You should navigate to the project folder `system` using your terminal of choice.
+Then, execute the following command:
+
+```bash
+python main.py
+```
+
 ## Contributing
 
 Pull requests are welcome. For major changes, please open an issue first
