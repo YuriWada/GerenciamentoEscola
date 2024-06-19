@@ -7,16 +7,24 @@ class Professor(Usuario):
         self.disciplinas = disciplinas
 
     def buscar_disciplinas(self) -> list:
+        """
+        Método que busca as disciplinas nas quais o professor está matriculado.
+
+        Returns:
+            list: Retorna a lista de disciplinas nas quais o professor está matriculado.
+                Se o professor não estiver matriculado em nenhuma disciplina, retorna uma lista vazia ([]).
+        """
         if self.disciplinas:
             return self.disciplinas
         return []
     
     def adicionar_notas(self, turma: str, aluno: str) -> None:
-        """Adiciona uma nota para um aluno em uma turma específica
+        """
+        Adiciona uma nota para um aluno em uma turma específica.
 
         Args:
-            turma (str): Turma em que o aluno está matriculado
-            aluno (str): Aluno 
+            turma (str): Nome da turma em que o aluno está matriculado.
+            aluno (str): Nome do aluno para o qual a nota será adicionada.
         """
         infos = self.db.query_data(turma, {"nome": aluno})
         if not infos:
@@ -41,11 +49,12 @@ class Professor(Usuario):
         
         
     def alterar_notas(self, turma: str, aluno: str) -> None:
-        """Altera a nota de um aluno em uma turma específica
+        """
+        Altera a nota de um aluno em uma turma específica.
 
         Args:
-            turma (str): Turma em que o aluno está matriculado
-            aluno (str): Aluno
+            turma (str): Nome da turma em que o aluno está matriculado.
+            aluno (str): Nome do aluno cuja nota será alterada.
         """
         infos = self.db.query_data(turma, {"nome": aluno})
         if not infos:
@@ -69,11 +78,12 @@ class Professor(Usuario):
                 print(f"Nota alterada com sucesso para {nova_nota} para o aluno {aluno}!")
 
     def remover_nota(self, turma: str, aluno: str) -> None:
-        """Remove a nota de um aluno em uma turma específica.
+        """
+        Remove a nota de um aluno em uma turma específica.
 
         Args:
-            turma (str): Nome da turma.
-            aluno (str): Nome do aluno.
+            turma (str): Nome da turma em que o aluno está matriculado.
+            aluno (str): Nome do aluno cuja nota será removida.
         """
         infos = self.db.query_data(turma, {"nome": aluno})
         if not infos:
@@ -88,6 +98,18 @@ class Professor(Usuario):
                 print(f"Nota removida com sucesso para o aluno {aluno}!")
 
     def calcula_aprovados(self, disciplina: str) -> dict:
+        """
+        Calcula os alunos aprovados e reprovados em uma disciplina.
+
+        Args:
+            disciplina (str): Nome da disciplina.
+
+        Returns:
+            dict: Dicionário com duas listas de dicionários:
+                - 'aprovados': Lista de alunos aprovados na forma {'nome': str, 'nota': float}.
+                - 'reprovados': Lista de alunos reprovados na forma {'nome': str, 'nota': float}.
+                Ambos os dicionários contêm o nome do aluno e sua nota na disciplina.
+        """
         infos = self.db.query_data(disciplina)
         aprovados = []
         reprovados = []
@@ -108,6 +130,16 @@ class Professor(Usuario):
         return alunos
     
     def calcula_media_disciplina(self, disciplina: str) -> float:
+        """
+        Calcula a média de notas de uma determinada disciplina.
+
+        Args:
+            disciplina (str): Nome da disciplina.
+
+        Returns:
+            float: Média das notas dos alunos na disciplina especificada.
+                Retorna -1 se não houver notas registradas para a disciplina.
+        """
         infos = self.db.query_data(disciplina)
         notas = [info.get('nota') for info in infos if info.get('nota') is not None]
         

@@ -13,13 +13,14 @@ class Calendario:
         self.db = DataBase()
 
     def insert_event(self, dict : dict) -> bool:
-        """Insere um evento no calendário do banco de dados.
+        """
+        Insere um evento no calendário do banco de dados.
 
         Args:
-            dict (dict): recebe um dicionário com nome, horarios {hh:mm} e data {dd/mm/aaaa}
+            dict (dict): Dicionário contendo informações do evento com as chaves 'nome', 'horarios' e 'data'.
 
         Returns:
-            bool: true - evento inserido com sucesso, false - evento não inserido
+            bool: True se o evento foi inserido com sucesso, False se o evento já existe ou ocorrer algum erro.
         """
         if self.db.query_data(self.nome, dict):
             infos = self.db.query_data(self.nome, dict)
@@ -32,13 +33,15 @@ class Calendario:
         return True
     
     def query_event(self, dict : dict = None) -> list:
-        """Pesquisa eventos no calendário escolar
+        """
+        Pesquisa eventos no calendário escolar.
 
         Args:
-            dict (dict, optional): dicionário contendo os critérios de busca no calendário. Defaults to None.
+            dict (dict, optional): Dicionário contendo os critérios de busca no calendário. 
+                Defaults to None.
 
         Returns:
-            list: retorna uma lista com os resultados da pesquisa
+            list: Lista com os resultados da pesquisa. Retorna uma lista vazia se nenhum evento for encontrado.
         """
         infos = []
         if dict:
@@ -48,11 +51,15 @@ class Calendario:
         return infos
     
     def update_event(self, search_criteria : dict, dict : dict) -> None:
-        """Atualiza um evento no calendário
+        """
+        Atualiza um evento no calendário.
 
         Args:
-            search_criteria (dict): critérios de busca para encontrar o evento que se quer alterar
-            dict (dict): campos atualizados do evento
+            search_criteria (dict): Critérios de busca para encontrar o evento que se quer alterar.
+            dict (dict): Campos atualizados do evento a serem aplicados.
+
+        Returns:
+            None
         """
         self.db.update_data(self.nome, search_criteria, {'$set': dict})
 
@@ -66,7 +73,11 @@ class Calendario:
         print(f"> Evento {dict} apagado com sucesso!")
 
     def exibir_calendario(self) -> None:
-        """Exibe o calendário do mês atual com eventos registrados
+        """
+        Exibe o calendário do mês atual com eventos registrados.
+
+        Retorna:
+            None
         """
         now = datetime.now()
         ano = now.year
@@ -84,7 +95,11 @@ class Calendario:
             print("\nNenhum evento registrado para este mês.")
     
     def exibir_calendario_anual(self) -> None:
-        """Exibe o calendário anual com eventos registrados
+        """
+        Exibe o calendário anual com eventos registrados.
+
+        Retorna:
+            None
         """
         now = datetime.now()
         ano = now.year
@@ -103,7 +118,17 @@ class Calendario:
             print("\n" + "="*40 + "\n")
 
     def inserir_evento_calendario(self) -> None:
-        """Método para inserir um evento no calendário
+        """
+        Método para inserir um evento no calendário.
+
+        O método solicita ao usuário o nome, horário e data do evento. Verifica se o formato do horário
+        (hh:mm) e da data (dd/mm/aaaa) estão corretos antes de inserir o evento no banco de dados.
+
+        Raises:
+            ValueError: Se o formato do horário ou da data inseridos pelo usuário estiverem incorretos.
+
+        Returns:
+            None
         """
         try:
             nome = input("> Insira o nome do evento: ")
@@ -129,7 +154,18 @@ class Calendario:
             print(f"Erro ao inserir evento no calendário: {e}")
 
     def modificar_evento_calendario(self) -> None:
-        """Método para modificar um evento existente no calendário
+        """
+        Método para modificar um evento existente no calendário.
+
+        O método leva o usuário por alguns de prompts a buscar o evento a ser modificado,
+        especificando nome, horário e data. Ele valida os formatos de horário (hh:mm) e data (dd/mm/aaaa)
+        inseridos pelo usuário antes de atualizar o evento no calendário.
+
+        Raises:
+            ValueError: Se o formato do horário ou da data inseridos pelo usuário estiverem incorretos.
+
+        Returns:
+            None
         """
         try:
             nome = input("> Insira o nome do evento que quer alterar: ")
@@ -186,7 +222,18 @@ class Calendario:
             print(f"Erro ao modificar evento no calendário: {e}")
 
     def apagar_evento_calendario(self) -> None:
-        """Método para apagar um evento existente no calendário
+        """
+        Método para apagar um evento existente no calendário.
+
+        Este método busca o evento a ser apagado, especificando nome, horário e data. 
+        Ele valida os formatos de horário (hh:mm) e data (dd/mm/aaaa) inseridos pelo usuário 
+        antes de remover o evento do calendário.
+
+        Raises:
+            ValueError: Se o formato do horário ou da data inseridos pelo usuário estiverem incorretos.
+
+        Returns:
+            None
         """
         try:
             nome = input("> Insira o nome do evento que quer apagar: ")

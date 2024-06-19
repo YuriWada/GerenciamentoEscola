@@ -21,10 +21,21 @@ class CriaDisciplina:
         # self.calendario = Calendario()
 
     def validacao_dados(self) -> bool:
-        """Verifica se uma Disciplina já foi cadastrada em um mesmo horário, para não haver conflitos.
+        """
+        Verifica se uma disciplina já foi cadastrada em um mesmo horário para evitar conflitos.
+
+        Esta função consulta todas as disciplinas cadastradas no banco de dados para verificar se
+        alguma delas possui horários de aula idênticos aos da disciplina atual. Se encontrar um
+        conflito de horários, imprime uma mensagem informando que a aula já está cadastrada no
+        horário indicado e retorna False. Caso contrário, retorna True, indicando que os dados foram validados
+        sem conflitos.
 
         Returns:
-            bool: true - se os dados foram validados com sucesso (não há conflito), false - se não foram validados
+            bool: True se os dados foram validados com sucesso (sem conflitos de horário), False se houver conflitos.
+
+        Raises:
+            Exception: Se ocorrer algum erro durante a validação dos dados no banco de dados.
+                    O erro específico é capturado e impresso na tela.
         """
         try:
             disciplinas = self.db.query_data("Disciplinas")
@@ -41,10 +52,23 @@ class CriaDisciplina:
             print(f"Erro ao validar dados: {e}")
 
     def save(self) -> None:
-        """Salva os dados da Disciplina no banco de dados em duas coleções:
-        Disciplinas: coleção com todas as Disciplinas, indicando para cada Disciplina
-        nome, Disciplina, lista de horarios, profesor e alunos matriculados.
-        Disciplina[digito]: coleção própria para a Disciplina, contendo alunos (com matricula) e notas.
+        """
+        Salva os dados da Disciplina no banco de dados em duas coleções:
+
+        1. Coleção 'Disciplinas': Contém todas as disciplinas cadastradas, cada uma representada por um documento
+        contendo nome da disciplina, horários das aulas, nome do professor responsável e lista de alunos matriculados.
+
+        2. Coleção 'Nome_da_Disciplina': Coleção específica para cada disciplina cadastrada, onde são armazenados os
+        detalhes dos alunos matriculados, incluindo suas matrículas e notas.
+
+        Esta função verifica a validação dos dados da disciplina atual usando o método `validacao_dados()`. Se os dados
+        forem válidos (sem conflitos de horário com outras disciplinas), insere os dados da disciplina na coleção
+        'Disciplinas' e cria uma coleção específica para a disciplina na forma 'Nome_da_Disciplina'. Se ocorrer algum
+        erro durante o processo de inserção ou validação, imprime uma mensagem de erro.
+
+        Raises:
+            Exception: Se ocorrer algum erro durante o processo de inserção de dados no banco de dados.
+                    O erro específico é capturado e impresso na tela.
         """
         try:
             if self.validacao_dados():

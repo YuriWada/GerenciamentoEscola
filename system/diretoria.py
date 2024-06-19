@@ -27,6 +27,27 @@ class Diretoria(Usuario):
         self.calendario = Calendario()
 
     def inserir_em_disciplinas(self, infos : list, max_attempts : int) -> list:
+        """
+        Método auxiliar para obter os nomes das disciplinas em que um professor ou aluno será matriculado.
+
+        Este método auxilia na coleta dos nomes das disciplinas que um professor ou aluno deve ser 
+        matriculado. Ele permite ao usuário inserir os nomes das disciplinas, validando se essas disciplinas 
+        existem na lista fornecida e garantindo que as inserções não excedam um número máximo de tentativas.
+
+        Args:
+            infos (list): Lista de disciplinas disponíveis, cada uma representada por um dicionário contendo 
+                        ao menos a chave 'nome'.
+            max_attempts (int): Número máximo de tentativas permitidas para inserir os nomes das disciplinas.
+
+        Returns:
+            list: Lista com os nomes das disciplinas em que o professor ou aluno será matriculado. 
+                Se o usuário digitar '0', o processo de inserção é interrompido e a lista atual de 
+                disciplinas é retornada.
+
+        Exceções:
+            Qualquer exceção gerada durante o processamento das entradas será capturada e uma mensagem 
+            de erro será exibida.
+        """
         disciplinas = []
 
         for i in range(max_attempts):
@@ -44,7 +65,28 @@ class Diretoria(Usuario):
         return disciplinas
 
     def cadastrar_aluno(self) -> None:
-        """Método utilizado para cadastrar um novo aluno no sistema
+        """
+        Método utilizado para cadastrar um novo aluno no sistema.
+
+        Este método interage com o usuário para coletar todas as informações necessárias para cadastrar 
+        um novo aluno no sistema. O usuário pode cancelar o cadastro a qualquer momento digitando '0'. 
+        O processo envolve a coleta de dados pessoais, informações de login, geração de um número de 
+        matrícula único, e a possibilidade de matricular o aluno em disciplinas.
+
+        Procedimento:
+        1. Coleta informações pessoais do aluno: nome, idade, endereço, telefone, email, curso.
+        2. Coleta informações de cadastro no sistema: login e senha.
+        3. Gera um número de matrícula único para o aluno.
+        4. Permite a matrícula do aluno em disciplinas, se desejado.
+        5. Salva os dados do aluno e das disciplinas no banco de dados.
+
+        Exceções:
+            Se qualquer entrada for '0', o cadastro será cancelado e uma mensagem será exibida.
+            Verificações de validação são realizadas para a idade e a existência de disciplinas.
+            Se um erro ocorrer durante o processamento, uma mensagem de erro será exibida.
+
+        Returns:
+            None
         """
         print("> Cadastro de novo aluno")
         print("> Digite 0 para cancelar a qualquer momento")
@@ -128,6 +170,30 @@ class Diretoria(Usuario):
             cadastrodisciplina.save()
     
     def cadastrar_aluno_em_disciplina(self, disciplina : str, aluno : str) -> None:
+        """
+        Cadastra um aluno em uma disciplina.
+
+        Este método busca verificar a existência da disciplina e do aluno no banco de dados antes de proceder com o 
+        cadastro do aluno na disciplina especificada. Se a disciplina ou o aluno não existirem, o método informa ao 
+        usuário e termina. Caso contrário, tenta realizar o cadastro e lida com possíveis exceções.
+
+        Args:
+            disciplina (str): Nome da disciplina em que o aluno será matriculado.
+            aluno (str): Nome do aluno que será matriculado na disciplina.
+
+        Procedimento:
+        1. Verifica a existência da disciplina no banco de dados.
+        2. Verifica a existência do aluno no banco de dados.
+        3. Se a disciplina ou o aluno não existirem, exibe uma mensagem de erro e retorna.
+        4. Caso ambos existam, tenta cadastrar o aluno na disciplina.
+        5. Em caso de erro durante o cadastro, exibe uma mensagem de erro específica.
+
+        Exceções:
+            Se qualquer etapa de verificação ou cadastro falhar, uma mensagem de erro será exibida.
+
+        Returns:
+            None
+        """
         valida_disciplina = self.db.query_data("Disciplinas", {"nome": disciplina})
         valida_aluno = self.db.query_data("Alunos", {"nome": aluno})
         if not valida_disciplina or not valida_aluno:
@@ -140,7 +206,29 @@ class Diretoria(Usuario):
             print(f"Não foi possível cadastrar o aluno na disciplina! {e}")
 
     def cadastrar_professor(self) -> None:
-        """Método para cadastrar um novo professor no sistema
+        """
+        Método para cadastrar um novo professor no sistema.
+
+        Este método guia o usuário pelo processo de cadastro de um novo professor, incluindo a coleta de informações pessoais,
+        detalhes de login e senha, e disciplinas em que o professor lecionará. O método também permite cancelar o cadastro em
+        qualquer momento.
+
+        Procedimento:
+        1. Solicita e coleta informações pessoais do professor (nome, idade, endereço, telefone, email).
+        2. Solicita e coleta informações de cadastro no sistema (login e senha).
+        3. Exibe uma lista de disciplinas disponíveis e permite selecionar aquelas em que o professor lecionará.
+        4. Se a lista de disciplinas não estiver vazia, prossegue com o cadastro do professor nas disciplinas.
+        5. Salva as informações do professor no sistema.
+        6. Exibe mensagens apropriadas em caso de sucesso ou cancelamento do cadastro.
+
+        Args:
+            None
+
+        Exceções:
+            Se qualquer entrada for '0', o processo de cadastro será cancelado e uma mensagem será exibida.
+
+        Returns:
+            None
         """
         print("> Cadastro de novo professor")
         print("> Digite 0 para cancelar a qualquer momento")
@@ -215,6 +303,30 @@ class Diretoria(Usuario):
         print("Professor cadastrado com sucesso!")
     
     def cadastrar_professor_em_disciplina(self, professor : str, disciplina : str) -> None:
+        """
+        Método para cadastrar um professor em uma disciplina específica.
+
+        Este método verifica a existência do professor e da disciplina no banco de dados. Se ambos existirem,
+        o professor é cadastrado na disciplina. Em caso de erro ou se o professor/disciplina não existirem,
+        uma mensagem apropriada é exibida.
+
+        Args:
+            professor (str): Nome do professor a ser cadastrado na disciplina.
+            disciplina (str): Nome da disciplina na qual o professor será cadastrado.
+
+        Procedimento:
+        1. Verifica se a disciplina e o professor existem no banco de dados.
+        2. Se qualquer um não existir, exibe uma mensagem de erro e encerra o processo.
+        3. Se ambos existirem, tenta cadastrar o professor na disciplina.
+        4. Em caso de sucesso, o professor é cadastrado na disciplina.
+        5. Em caso de erro, exibe uma mensagem de erro apropriada.
+
+        Exceptions:
+            Exibe uma mensagem de erro se não for possível cadastrar o professor na disciplina.
+
+        Returns:
+            None
+        """
         valida_disciplina = self.db.query_data("Disciplinas", {"nome": disciplina})
         valida_professor = self.db.query_data("Professores", {"nome": professor})
         if not valida_disciplina or not valida_professor:
@@ -227,6 +339,27 @@ class Diretoria(Usuario):
             print(f"Não foi possível cadastrar o professor na disciplina! {e}")
 
     def exibir_informações_disciplina(self, disciplina : str) -> None:
+        """
+        Exibe informações completas sobre uma disciplina, incluindo nome, professor, horários e lista de alunos matriculados.
+
+        Este método consulta o banco de dados para obter informações sobre a disciplina especificada.
+        Em seguida, exibe o nome da disciplina, o nome do professor responsável e os horários das aulas.
+        O usuário pode optar por exibir informações sobre os alunos matriculados na disciplina.
+
+        Args:
+            disciplina (str): Nome da disciplina cujas informações serão exibidas.
+
+        Procedimento:
+        1. Consulta o banco de dados para obter informações completas sobre a disciplina especificada.
+        2. Exibe o nome da disciplina, o nome do professor responsável e os horários das aulas.
+        3. Solicita ao usuário que digite uma opção para exibir informações detalhadas sobre os alunos matriculados.
+        4. Se o usuário escolher a opção '1', exibe uma lista dos alunos matriculados na disciplina.
+        5. Se o usuário escolher a opção '0', o processo é encerrado.
+        6. Se o usuário inserir uma opção inválida, exibe uma mensagem de erro apropriada.
+
+        Returns:
+            None
+        """
         infos = self.db.query_data("Disciplinas", {"nome": disciplina})
         info = infos[0]
         print(f"> Nome: {info.get('nome')}")
@@ -249,6 +382,31 @@ class Diretoria(Usuario):
                 print("Não há alunos matriculados nesta disciplina!")
 
     def editar_infos(self, tipo: str) -> None:
+        """
+        Método geral para editar informações de qualquer coleção no sistema.
+
+        Este método permite ao usuário selecionar uma coleção específica (como 'Alunos', 'Professores' ou 'Disciplinas')
+        e, em seguida, escolher um item dessa coleção para editar. O usuário pode optar por editar qualquer campo de informação
+        dentro do item selecionado, incluindo listas, onde é possível adicionar ou remover elementos.
+
+        Args:
+            tipo (str): Nome da coleção no banco de dados que contém as informações a serem editadas ('Alunos', 'Professores', 'Disciplinas', etc.).
+
+        Procedimento:
+        1. Consulta o banco de dados para obter todas as informações da coleção especificada por 'tipo'.
+        2. Exibe uma lista numerada de itens encontrados na coleção, permitindo ao usuário escolher qual item editar.
+        3. Solicita ao usuário que selecione o campo dentro do item escolhido que deseja editar.
+        4. Se o campo escolhido for uma lista, oferece opções para adicionar ou remover elementos dessa lista.
+        5. Realiza a edição no banco de dados, atualizando o valor do campo conforme especificado pelo usuário.
+        6. Exibe mensagens de confirmação após a edição bem-sucedida de um campo.
+
+        Returns:
+            None
+
+        Raises:
+            ValueError: Se a entrada do usuário não for um número válido.
+            Exception: Qualquer outro erro que possa ocorrer ao tentar editar as informações no banco de dados.
+        """
         try:
             infos = self.db.query_data(f"{tipo}")
             if not infos:

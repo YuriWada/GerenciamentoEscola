@@ -22,10 +22,12 @@ class Aluno(Usuario):
         self.disciplinas_matriculadas = disciplinas_matriculadas
         
     def buscar_notas(self) -> list:
-        """Método para buscar as notas de cada disciplina do aluno
+        """
+        Método para buscar as notas de cada disciplina do aluno.
 
         Returns:
-            list: lista de dicionários com as notas do aluno. {"disciplina", "nota"}
+            list: Lista de dicionários com as notas do aluno. Cada dicionário possui as chaves "disciplina" e "nota".
+                Retorna uma lista vazia se o aluno não estiver matriculado em nenhuma disciplina.
         """
         if not self.disciplinas_matriculadas:
             print(f"O aluno {self.nome} não está matriculado em nenhuma disciplina!")
@@ -44,10 +46,12 @@ class Aluno(Usuario):
         return notas
     
     def buscar_horarios(self) -> list:
-        """Método para buscar os horários de cada disciplina do aluno
+        """
+        Método para buscar os horários de cada disciplina do aluno.
 
         Returns:
-            list: lista com os horários das disciplinas
+            list: Lista com os horários das disciplinas. Cada item da lista é um dicionário com as chaves "disciplina" e "horarios".
+                Retorna uma lista vazia se o aluno não estiver matriculado em nenhuma disciplina.
         """
         if not self.disciplinas_matriculadas:
             print(f"O aluno {self.nome} não está matriculado em nenhuma disciplina!")
@@ -63,9 +67,10 @@ class Aluno(Usuario):
         return horarios
 
     def busca_disciplinas_matriculadas(self) -> list:
-        """Método para buscar as disciplinas matriculadas do aluno
+        """
+        Método para buscar as disciplinas matriculadas do aluno.
 
         Returns:
-            list: disciplinas em que o aluno está matriculado
+            list: Disciplinas em que o aluno está matriculado.
         """
         return self.disciplinas_matriculadas

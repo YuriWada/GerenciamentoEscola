@@ -14,13 +14,24 @@ class Disciplina(ABC):
         self.db = DataBase()
 
     def media_notas(self) -> float:
-        """Método para obter a média aritmética de notas da Disciplina
+        """
+        Calcula a média aritmética das notas registradas para a Disciplina.
 
         Raises:
-            ValueError: se nenhuma nota foi registrada no sistema
+            ValueError: Se nenhuma nota foi registrada para a Disciplina.
 
         Returns:
-            float: a média aritmética de notas
+            float: A média aritmética das notas.
+
+        Notes:
+            Este método realiza uma consulta ao banco de dados para obter as notas registradas.
+            Caso nenhuma nota seja encontrada, um ValueError é levantado.
+
+        Example:
+            ```
+            media = obj.media_notas()
+            print(f"Média das notas: {media}")
+            ```
         """
         try:
             infos = self.db.query_data(self.nome, {})
@@ -35,13 +46,25 @@ class Disciplina(ABC):
             print(f"Erro ao calcular a média das notas: {e}")
 
     def listagem_alunos(self) -> list:
-        """Método para lista os alunos matriculados na Disciplina
+        """
+        Retorna uma lista com os nomes dos alunos matriculados na Disciplina.
 
         Raises:
-            ValueError: se nenhum aluno está matriculado
+            ValueError: Se nenhum aluno está matriculado na Disciplina.
 
         Returns:
-            list: lista de alunos matriculados
+            list: Lista contendo os nomes dos alunos matriculados.
+
+        Notes:
+            Este método realiza uma consulta ao banco de dados para obter os nomes dos alunos matriculados.
+            Caso nenhum aluno esteja matriculado, um ValueError é levantado.
+
+        Example:
+            ```
+            alunos = obj.listagem_alunos()
+            for aluno in alunos:
+                print(aluno)
+            ```
         """
         try:
             infos = self.db.query_data(self.nome)
@@ -55,13 +78,25 @@ class Disciplina(ABC):
             print(f"Erro ao encontrar nomes: {e}")
 
     def horarios_disciplina(self) -> list:
-        """Método para verificar os horários da Disciplina
+        """
+        Retorna uma lista com os horários associados à Disciplina.
 
         Raises:
-            ValueError: Se nenhuma informação sobre a Disciplina foi encontrada
+            ValueError: Se nenhuma informação sobre a Disciplina foi encontrada.
 
         Returns:
-            list: lista contendo os horários associados à Disciplina
+            list: Lista contendo os horários associados à Disciplina.
+
+        Notes:
+            Este método realiza uma consulta ao banco de dados para obter os horários associados à Disciplina.
+            Caso nenhuma informação sobre a Disciplina seja encontrada, um ValueError é levantado.
+
+        Example:
+            ```
+            horarios = obj.horarios_disciplina()
+            for horario in horarios:
+                print(horario)
+            ```
         """
         try:
             infos = self.db.query_data("Disciplinas", {"nome": self.nome})

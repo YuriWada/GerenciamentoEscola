@@ -18,10 +18,11 @@ class CadastroAlunoDisciplina(CadastroDisciplina):
         self.disciplinas = disciplinas
 
     def valida_dados(self) -> bool:
-        """Método para validar os dados do aluno.
+        """
+        Método para validar os dados do aluno, verificando se o aluno já está matriculado em alguma disciplina.
 
         Returns:
-            bool: retorna True se os dados são válidos. False se são inválidos.
+            bool: True se os dados são válidos (aluno não está matriculado em nenhuma disciplina), False se são inválidos.
         """
         for disciplina in self.disciplinas:
             infos = self.db.query_data("Disciplinas", {"nome": disciplina})
@@ -35,10 +36,11 @@ class CadastroAlunoDisciplina(CadastroDisciplina):
         return True
 
     def save(self) -> bool:
-        """Método para salvar os dados do aluno no banco de dados.
+        """
+        Método para salvar os dados do aluno no banco de dados, matriculando-o nas disciplinas especificadas.
 
         Returns:
-            bool: retorna True se os dados foram salvos. False se não foram salvos.
+            bool: True se os dados foram salvos com sucesso, False se ocorrer algum erro durante o processo.
         """
         try:
             if not self.valida_dados():
