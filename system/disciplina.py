@@ -1,7 +1,6 @@
 from abc import ABC, abstractmethod
 from pymongo import errors
 from database import DataBase
-from typing import List
 
 class Disciplina(ABC):
     def __init__(self, nome : str) -> None:
