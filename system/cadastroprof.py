@@ -31,7 +31,6 @@ class CadastroProfessor(Cadastro):
                 "email": self.email,
                 "login": self._login,
                 "senha": self.__senha,
-                "disciplinas_matriculadas": self.disciplinas_matriculadas
             }
             self.db.insert_data("Professores", data)
             print("Dados cadastrados com sucesso!")

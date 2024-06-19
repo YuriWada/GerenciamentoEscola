@@ -40,8 +40,12 @@ class CadastroProfessorDisciplina(CadastroDisciplina):
             if not self.valida_dados():
                 return False
             for disciplina in self.disciplinas:
+                infos_antigo = self.db.query_data("Disciplinas", {"nome": disciplina})
+                prof_antigo = infos_antigo[0].get('professor')
+                self.db.update_data("Professores", {"nome": prof_antigo}, {"$pull": {"disciplinas_matriculadas": disciplina}})
                 self.db.update_data("Disciplinas", {"nome": disciplina}, {'$set': {"professor": self.professor}})
-                print(f"professor {self.professor} adicionado à disciplina {disciplina} com sucesso.")
+                self.db.update_data("Professores", {"nome": self.professor}, {'$push': {"disciplinas_matriculadas": disciplina}})
+                print(f"Professor(a) {self.professor} adicionado(a) à disciplina {disciplina} com sucesso.")
             return True
         except Exception as e:
             print(f"Erro ao salvar dados do professor: {e}")

@@ -42,6 +42,7 @@ class CadastroAlunoDisciplina(CadastroDisciplina):
         """
         try:
             if not self.valida_dados():
+                print("Não foi possível matricular o aluno na disciplina!")
                 return False
             aluno = {"nome": self.aluno, "matricula": self.matricula}
             aluno_com_nota = {"nome": self.aluno, "matricula": self.matricula, "nota": None}

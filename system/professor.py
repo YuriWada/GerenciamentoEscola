@@ -86,3 +86,34 @@ class Professor(Usuario):
             else:
                 self.db.update_data(turma, {"nome": aluno}, {'$unset': {'nota': ""}})
                 print(f"Nota removida com sucesso para o aluno {aluno}!")
+
+    def calcula_aprovados(self, disciplina: str) -> dict:
+        infos = self.db.query_data(disciplina)
+        aprovados = []
+        reprovados = []
+
+        for info in infos:
+            nome = info.get('nome')
+            nota = info.get('nota')
+            if nota is not None:
+                if nota >= 60:
+                    aprovados.append({'nome': nome, 'nota': nota})
+                else:
+                    reprovados.append({'nome': nome, 'nota': nota})
+
+        alunos = {
+            'aprovados': aprovados,
+            'reprovados': reprovados
+        }
+        return alunos
+    
+    def calcula_media_disciplina(self, disciplina: str) -> float:
+        infos = self.db.query_data(disciplina)
+        notas = [info.get('nota') for info in infos if info.get('nota') is not None]
+        
+        if not notas:
+            print(f"Não há notas registradas para a disciplina {disciplina}.")
+            return -1
+
+        media = sum(notas) / len(notas)
+        return media

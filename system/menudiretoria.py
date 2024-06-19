@@ -93,15 +93,26 @@ class MenuDiretoria(Menu):
             print("> 3. Cadastrar professor em disciplina")
             sub_option = int(input("> Escolha uma opção: "))
             if sub_option == 1:
-                infos_disciplinas = self._db.query_data("Disciplinas")
-                for e, info_disciplina in enumerate(sorted(infos_disciplinas, key=lambda x:x['nome']), start=1):
+                infos_disciplinas = sorted(self._db.query_data("Disciplinas"), key=lambda x:x['nome'])
+                for e, info_disciplina in enumerate(infos_disciplinas, start=1):
                     print(f"{e}. {info_disciplina.get('nome')}")
+                exibe_disc = int(input("> Digite o número da disciplina para exibir informações adicionais (0 para cancelar): "))
+                if exibe_disc == 0:
+                    return self
+                elif exibe_disc > len(infos_disciplinas) or exibe_disc < 0:
+                    print("Opção inválida!")
+                    return self
+                else:
+                    self.funcionario.exibir_informações_disciplina(infos_disciplinas[exibe_disc-1].get('nome'))
                 return self
             elif sub_option == 2:
                 nome_aluno = input("> Insira o nome do aluno: ")
                 nome_disciplina = input("> Insira o nome da disciplina: ")
                 self.funcionario.cadastrar_aluno_em_disciplina(nome_disciplina, nome_aluno)
             elif sub_option == 3:
+                nome_professor = input("> Insira o nome do professor: ")
+                nome_disciplina = input("> Insira o nome da disciplina: ")
+                self.funcionario.cadastrar_professor_em_disciplina(nome_professor, nome_disciplina)
                 return self
             elif sub_option == 0:
                 return self

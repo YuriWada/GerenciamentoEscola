@@ -32,8 +32,8 @@ class Diretoria(Usuario):
         for i in range(max_attempts):
             try:
                 disciplina = input("Insira o nome da disciplina: ").strip()
-                if int(disciplina) == 0:
-                    break
+                if disciplina == '0':
+                    return disciplinas
                 elif any(t['nome'] == disciplina for t in infos):
                     disciplinas.append(disciplina)
                 else:
@@ -189,9 +189,9 @@ class Diretoria(Usuario):
         if infos:
             for e, info in enumerate(infos):
                 print(f"{e+1}. {info.get('nome')}")
-            print(">Insira o nome, um de cada vez, da disciplina em que deseja matricular o docente (0 para cancelar):")
+            print("> Insira o nome, um de cada vez, da disciplina em que deseja matricular o docente (0 para cancelar):")
 
-        disciplinas = self.inserir_em_disciplinas(infos, 5)
+        disciplinas = self.inserir_em_disciplinas(infos, len(infos))
         if not disciplinas:
             print("O professor não foi cadastrado em nenhuma disciplina!")
         else:
@@ -202,30 +202,51 @@ class Diretoria(Usuario):
             infos = self.db.query_data("Disciplinas", {'nome': disciplina})
             professores_antigos.append(infos[0].get('professor'))
 
-        cadastroprofessor = CadastroProfessor(nome, idade, endereco, telefone, email, login, senha, disciplinas)
+        cadastroprofessor = CadastroProfessor(nome, idade, endereco, telefone, email, login, senha)
         cadastroprofessor.save()
 
         if disciplinas is not None and disciplinas != []:
             cadastrodisciplina = CadastroProfessorDisciplina(nome, disciplinas)
-            if cadastrodisciplina.save():
-                for professor in professores_antigos:
-                    self.db.update_data("Professores", {'nome': professor}, {'$set': {'disciplinas_matriculadas': None}})
-            else:
-                print("Não foi possível cadastrar o professor nas disciplinas!")
+            cadastrodisciplina.save()
+        else:
+            print("Não foi possível cadastrar o professor em disciplinas!")
+            return
         
         print("Professor cadastrado com sucesso!")
     
-    def cadastrar_professor_em_disciplina(self) -> None:
-        pass
+    def cadastrar_professor_em_disciplina(self, professor : str, disciplina : str) -> None:
+        valida_disciplina = self.db.query_data("Disciplinas", {"nome": disciplina})
+        valida_professor = self.db.query_data("Professores", {"nome": professor})
+        if not valida_disciplina or not valida_professor:
+            print("Disciplina ou professor não existente! Tente de novo.")
+            return
+        try:
+            cadastroprofessor = CadastroProfessorDisciplina(professor, [disciplina])
+            cadastroprofessor.save()
+        except Exception as e:
+            print(f"Não foi possível cadastrar o professor na disciplina! {e}")
 
-    def exibir_informações_disciplina(self) -> None:
-        pass
-
-    def calcula_aprovados(self) -> None:
-        pass
-
-    def calcula_reprovados(self) -> None:
-        pass
+    def exibir_informações_disciplina(self, disciplina : str) -> None:
+        infos = self.db.query_data("Disciplinas", {"nome": disciplina})
+        info = infos[0]
+        print(f"> Nome: {info.get('nome')}")
+        print(f"Professor(a): {info.get('professor')}")
+        print("Horários:")
+        for horario in info.get('horarios'):
+            print(f". {horario}")
+        option = int(input("> Digite 1 para exibir informações dos alunos (0 para cancelar): "))
+        if option == 0:
+            return
+        elif option > 1 or option < 1:
+            print("Opção inválida!")
+            return
+        else:
+            if info.get('alunos'):
+                print("Lista de alunos matriculados na disciplina:")
+                for aluno in info.get('alunos'):
+                    print(f". {aluno['nome']}, {aluno['matricula']}")
+            else:
+                print("Não há alunos matriculados nesta disciplina!")
 
     def editar_infos(self, tipo: str) -> None:
         try:
