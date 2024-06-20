@@ -2,6 +2,8 @@ from usuario import *
 from typing import Type
 from diretoria import Diretoria
 from menu import Menu
+from criadisciplina import CriaDisciplina
+import re
 
 class MenuDiretoria(Menu):
     def __init__(self, diretoria : Type[Diretoria]) -> None:
@@ -91,6 +93,7 @@ class MenuDiretoria(Menu):
             print("> 1. Lista de disciplinas")
             print("> 2. Cadastrar aluno em disciplina")
             print("> 3. Cadastrar professor em disciplina")
+            print("> 4. Criar nova disciplina")
             sub_option = int(input("> Escolha uma opção: "))
             if sub_option == 1:
                 infos_disciplinas = sorted(self._db.query_data("Disciplinas"), key=lambda x:x['nome'])
@@ -114,6 +117,28 @@ class MenuDiretoria(Menu):
                 nome_disciplina = input("> Insira o nome da disciplina: ")
                 self.funcionario.cadastrar_professor_em_disciplina(nome_professor, nome_disciplina)
                 return self
+            elif sub_option -- 4:
+                nova_disciplina = input("> Insira o nome da nova disciplina: ").strip()
+                
+                while not nova_disciplina:
+                    print("Nome da disciplina não pode ser vazio.")
+                    nova_disciplina = input("> Insira o nome da nova disciplina: ").strip()
+                nova_disciplina_horarios = []
+                horarios = '1'
+                while horarios != '0':
+                    horarios = input("> Insira os horários da nova disciplina no formato (seg|ter|qua|qui|sex|sab|dom) hh:mm (0 para cancelar): ").strip()
+                    if horarios == '0':
+                        break
+                    if re.match(r'^(seg|ter|qua|qui|sex|sab|dom) [0-2][0-9]:[0-5][0-9]$', horarios, re.IGNORECASE):
+                        nova_disciplina_horarios.append(horarios)
+                    else:
+                        print("Horário inválido. Por favor, insira no formato dia_da_semana hh:mm.")
+                if not nova_disciplina_horarios:
+                    print("Nenhum horário válido inserido. Operação cancelada.")
+                    return
+                cria_disciplina = CriaDisciplina(nova_disciplina, nova_disciplina_horarios)
+                cria_disciplina.save()
+                print(f"Disciplina '{nova_disciplina}' criada com sucesso com os horários: {nova_disciplina_horarios}")
             elif sub_option == 0:
                 return self
             else:
