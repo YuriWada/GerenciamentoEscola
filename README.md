@@ -35,6 +35,24 @@ Then, execute the following command:
 python main.py
 ```
 
+### First Run
+You can use the following login information on the first run:
+
+Aluno:
+`Login` joao123
+`Senha` senha123
+
+Professor:
+`Login` maria123
+`Senha` senha456
+
+Diretoria:
+`Login` mariana456
+`Senha` senha456
+
+Please note that the database is not populated, which means that 
+some fields may not be clean or compatible with the functionalities.
+
 ## Contributing
 
 Pull requests are welcome. For major changes, please open an issue first
