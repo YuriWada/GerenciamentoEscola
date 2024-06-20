@@ -1,4 +1,3 @@
-from database import DataBase
 from abc import ABC, abstractmethod
 
 class CadastroDisciplina(ABC):
