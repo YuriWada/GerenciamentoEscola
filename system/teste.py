@@ -1,5 +1,4 @@
 from database import DataBase
-from disciplina import Disciplina
 from calendario import Calendario
 from cadastroaluno import CadastroAluno
 from cadastroprof import CadastroProfessor
