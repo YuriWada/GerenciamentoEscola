@@ -1,4 +1,5 @@
 from cadastrodisciplina import CadastroDisciplina
+from database import DataBase
 from typing import List
 
 class CadastroProfessorDisciplina(CadastroDisciplina):
@@ -13,6 +14,7 @@ class CadastroProfessorDisciplina(CadastroDisciplina):
         super().__init__()
         self.professor = professor
         self.disciplinas = disciplinas
+        self.db = DataBase()
 
     def valida_dados(self) -> bool:
         """Método utilizado para validar os dados.

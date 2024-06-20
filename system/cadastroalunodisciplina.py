@@ -1,4 +1,5 @@
 from cadastrodisciplina import CadastroDisciplina
+from database import DataBase
 from typing import List
 
 class CadastroAlunoDisciplina(CadastroDisciplina):
@@ -16,6 +17,7 @@ class CadastroAlunoDisciplina(CadastroDisciplina):
         self.matricula = matricula
         self.nota = nota
         self.disciplinas = disciplinas
+        self.db = DataBase()
 
     def valida_dados(self) -> bool:
         """

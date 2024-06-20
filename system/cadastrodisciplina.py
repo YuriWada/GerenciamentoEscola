@@ -2,14 +2,6 @@ from database import DataBase
 from abc import ABC, abstractmethod
 
 class CadastroDisciplina(ABC):
-    def __init__(self) -> None:
-        """Interface para Cadastro de Disciplinas
-
-        Args:
-            db (any): instância da classe de Banco de Dados
-        """
-        self.db = DataBase()
-
     @abstractmethod
     def valida_dados(self) -> bool:
         """Valida os dados dos construtores
